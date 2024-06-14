@@ -1,0 +1,8 @@
+#!/bin/sh
+
+exec 2>&1
+
+# execute all jobs once
+cut -d' ' -f6- crontab | sh
+
+exec crond -nf crontab

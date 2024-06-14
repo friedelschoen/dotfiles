@@ -1,0 +1,12 @@
+#!/bin/sh
+
+exec 2>&1
+
+SVDIR=.. sv check xserver > /dev/null || exit 1
+
+FIFO=/tmp/slstatus.fifo
+
+[ -p $FIFO ] || rm -f $FIFO
+mkfifo $FIFO
+
+exec slstatus -p $FIFO 
