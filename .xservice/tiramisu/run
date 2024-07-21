@@ -1,8 +1,0 @@
-#!/bin/sh
-
-exec 2>&1
-
-SVDIR=.. sv check xserver > /dev/null || exit 1
-SVDIR=.. sv check slstatus > /dev/null || exit 1
-
-exec tiramisu -o '\\x04#source\\x05#summary: #body\\n' | xargs -i printf '%b' '{}' > /tmp/slstatus.fifo

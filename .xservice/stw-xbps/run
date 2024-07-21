@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec stw -b '#ebdbb2' -f '#3c3836' -F 'Source Code Pro:size=9' -B 10 -p 120 -y 100% -Y -100% sh -c 'echo -- updates -- && xbps-install -Mun | cut -d" " -f1'

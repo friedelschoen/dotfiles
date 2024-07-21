@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec stw -p 1 -b '#ebdbb2' -f '#3c3836' -F 'Source Code Pro:size=9' -B 10 -y 20 sh -c 'echo -- services -- ; psv /var/service/* ~/.xservice/* 2> /dev/null | sort -k2,2 -k1,1'

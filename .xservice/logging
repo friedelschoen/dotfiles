@@ -1,6 +1,0 @@
-#!/bin/sh
-
-now=$(date '+%y-%m-%d %H:%M:%S')
-name=$(basename $(dirname $PWD))
-
-exec sed -e "s/^/[$now] $name: /" >> $XSERVICELOG
