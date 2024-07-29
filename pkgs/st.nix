@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> { }, config ? { } }:
+{ pkgs ? import <nixpkgs> { }, configHeader }:
 
 with pkgs; stdenv.mkDerivation rec {
   name = "st";
@@ -17,6 +17,10 @@ with pkgs; stdenv.mkDerivation rec {
     xorg.libX11
     xorg.libXft
   ];
+
+  configurePhase = ''
+    cp ${configHeader} config.h
+  '';
 
   buildPhase = ''
     make all

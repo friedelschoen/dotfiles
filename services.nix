@@ -21,9 +21,6 @@ with pkgs; [
     run = writeScript "blueman-applet-run" ''
       #!/bin/sh
 
-
-      SVDIR=.. sv check xserver > /dev/null || exit 1
-
       exec blueman-applet
     '';
   }
@@ -44,8 +41,6 @@ with pkgs; [
     run = writeScript "dwm-run" ''
       #!/bin/sh
 
-      SVDIR=.. sv check xserver > /dev/null || exit 1
-
       cd $HOME
       exec dwm
     '';
@@ -57,8 +52,6 @@ with pkgs; [
     run = writeScript "nm-applet-run" ''
       #!/bin/sh
 
-      SVDIR=.. sv check xserver > /dev/null || exit 1
-
       exec nm-applet
     '';
   }
@@ -69,8 +62,6 @@ with pkgs; [
     run = writeScript "pa-applet-run" ''
       #!/bin/sh
 
-      SVDIR=.. sv check xserver > /dev/null || exit 1
-
       exec pa-applet
     '';
   }
@@ -80,8 +71,6 @@ with pkgs; [
     setup = "";
     run = writeScript "slstatus-run" ''
       #!/bin/sh
-
-      SVDIR=.. sv check xserver > /dev/null || exit 1
 
       FIFO=/tmp/slstatus.fifo
 
@@ -139,7 +128,6 @@ with pkgs; [
     run = writeScript "tiramisu-run" ''
       #!/bin/sh
 
-      SVDIR=.. sv check xserver > /dev/null || exit 1
       SVDIR=.. sv check slstatus > /dev/null || exit 1
 
       exec tiramisu -o '\\x04#source\\x05#summary: #body\\n' | xargs -i printf '%b' '{}' > /tmp/slstatus.fifo
@@ -152,23 +140,7 @@ with pkgs; [
     run = writeScript "xfce-polkit-run" ''
       #!/bin/sh
 
-      SVDIR=.. sv check xserver > /dev/null || exit 1
-
       exec /usr/libexec/xfce-polkit
-    '';
-  }
-  {
-    name = "xserver";
-    enable = true;
-    setup = "";
-    run = writeScript "xserver-run" ''
-      #!/bin/sh
-
-      if [ -z "$XDG_VTNR" ]; then
-          exec X -nolisten tcp $DISPLAY
-      else
-          exec X -nolisten tcp $DISPLAY vt$XDG_VTNR
-      fi
     '';
   }
 ]

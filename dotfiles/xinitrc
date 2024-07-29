@@ -1,7 +1,16 @@
 #!/bin/sh
 
-export DISPLAY=:0
-export XAUTHORITY=$HOME/.Xauthority
+# set keyboard
+setxkbmap -layout us -variant intl
+
+# set background
+xsetroot -solid '#ebdbb2'
+
+# set security
+xhost +si:localuser:$USER
+
+# get resources config
+xrdb $HOME/.Xresources
 
 $HOME/.xservice/create-supervise.sh
 exec runsvdir $HOME/.xservice
