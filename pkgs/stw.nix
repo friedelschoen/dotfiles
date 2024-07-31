@@ -17,7 +17,7 @@ with pkgs; stdenv.mkDerivation {
   ];
 
   configurePhase = ''
-    cp ${configHeader} config.h
+    ln -sf ${configHeader} config.h
   '';
 
   buildPhase = ''

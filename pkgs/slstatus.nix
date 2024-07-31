@@ -2,17 +2,22 @@
 
 with pkgs; stdenv.mkDerivation rec {
   name = "slstatus";
-  src = fetchGit {
-    url = "https://git.friedelschoen.io/suckless/slstatus";
-    rev = "02281e5587b82b790533d7c4bbd146c561ee219c";
+  src = fetchurl {
+    url = https://dl.suckless.org/tools/slstatus-1.0.tar.gz;
+    hash = "sha256-bW0KFsCN2dIRFywwxHIHASZ6P0DNyTjbPzhvaits/1Q=";
   };
 
   buildInputs = [
     xorg.libX11
   ];
 
+  patches = [
+    ../patches/slstatus-battery-remaining.diff
+    ../patches/slstatus-notify.diff
+  ];
+
   configurePhase = ''
-    cp ${configHeader} config.h
+    ln -s ${configHeader} config.h
   '';
 
   buildPhase = ''

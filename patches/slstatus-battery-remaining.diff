@@ -1,0 +1,34 @@
+diff --git a/components/battery.c b/components/battery.c
+index 1c753f9..942e8a1 100644
+--- a/components/battery.c
++++ b/components/battery.c
+@@ -111,6 +111,17 @@
+ 
+ 		return "";
+ 	}
++
++  int battery_discharge(const char *bat) {
++    char path[PATH_MAX], state[12];
++
++    if (esnprintf(path, sizeof(path), POWER_SUPPLY_STATUS, bat) < 0)
++      return NULL;
++    if (pscanf(path, "%12[a-zA-Z ]", state) != 1)
++      return NULL;
++
++    return !strcmp(state, "Discharging");
++  }
+ #elif defined(__OpenBSD__)
+ 	#include <fcntl.h>
+ 	#include <machine/apmvar.h>
+diff --git a/slstatus.h b/slstatus.h
+index 8ef5874..dacfd98 100644
+--- a/slstatus.h
++++ b/slstatus.h
+@@ -4,6 +4,7 @@
+ const char *battery_perc(const char *);
+ const char *battery_remaining(const char *);
+ const char *battery_state(const char *);
++int battery_discharge(const char *);
+ 
+ /* cat */
+ const char *cat(const char *path);

@@ -41,8 +41,9 @@ rec {
 
   home.sessionVariables = {
     EDITOR = "vim";
-    PLAN9 = "${pkgs.plan9port}";
+    PLAN9 = "${pkgs.plan9port}/plan9";
     WEAKBOX = "$HOME/.glibc";
+    HOMEMANAGER = ./.;
   };
 
   nix = {

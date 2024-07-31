@@ -146,7 +146,7 @@ static const char **const themes[] = {
 
         }};
 
-static const char *colorname[] = /* themes[GRUVBOX_DARK]; */ {
+static const char *colorname__[] = /* themes[GRUVBOX_DARK]; */ {
     // normal colors
     "#708089", "#f85552", "#8da101", "#dfa000", "#3a94c5", "#df69ba", "#35a77c",
     "#939f91",
@@ -160,7 +160,7 @@ static const char *colorname[] = /* themes[GRUVBOX_DARK]; */ {
 
 };
 
-static const char *colorname__[] = { // real gruvbox dark
+static const char *colorname[] = { // real gruvbox dark
     "#665c54",
     "#cc241d",
     "#98971a",
@@ -366,7 +366,7 @@ static Key key[] = {
     {XK_KP_Delete, ControlMask, "\033[3;5~", +1, 0},
     {XK_KP_Delete, ShiftMask, "\033[2K", -1, 0},
     {XK_KP_Delete, ShiftMask, "\033[3;2~", +1, 0},
-    {XK_KP_Delete, XK_ANY_MOD, "\033[3~", -1, 0},
+    {XK_KP_Delete, XK_ANY_MOD, "\033[P", -1, 0},
     {XK_KP_Delete, XK_ANY_MOD, "\033[3~", +1, 0},
     {XK_KP_Multiply, XK_ANY_MOD, "\033Oj", +2, 0},
     {XK_KP_Add, XK_ANY_MOD, "\033Ok", +2, 0},
@@ -434,7 +434,7 @@ static Key key[] = {
     {XK_Delete, ControlMask, "\033[3;5~", +1, 0},
     {XK_Delete, ShiftMask, "\033[2K", -1, 0},
     {XK_Delete, ShiftMask, "\033[3;2~", +1, 0},
-    {XK_Delete, XK_ANY_MOD, "\033[3~", -1, 0},
+    {XK_Delete, XK_ANY_MOD, "\033[p", -1, 0},
     {XK_Delete, XK_ANY_MOD, "\033[3~", +1, 0},
     {XK_BackSpace, XK_NO_MOD, "\177", 0, 0},
     {XK_BackSpace, Mod1Mask, "\033\177", 0, 0},

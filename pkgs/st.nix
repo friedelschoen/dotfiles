@@ -1,10 +1,12 @@
 { pkgs ? import <nixpkgs> { }, configHeader }:
 
 with pkgs; stdenv.mkDerivation rec {
-  name = "st";
-  src = fetchGit {
-    url = "https://git.friedelschoen.io/suckless/st";
-    rev = "b878d53d99a3a7108107f2da3a856a90872ec6fd";
+  pname = "st";
+  version = "0.9.2";
+
+  src = pkgs.fetchurl {
+    url = "https://dl.suckless.org/st/st-${version}.tar.gz";
+    hash = "sha256-ayFdT0crIdYjLzDyIRF6d34kvP7miVXd77dCZGf5SUs=";
   };
 
   nativeBuildInputs = [
@@ -18,8 +20,17 @@ with pkgs; stdenv.mkDerivation rec {
     xorg.libXft
   ];
 
+  patches = [
+    ../patches/st-remove-terminfo.diff
+    ../patches/st-scrollback-ringbuffer.diff
+    (pkgs.fetchurl {
+      url = https://st.suckless.org/patches/anysize/st-anysize-20220718-baa9357.diff;
+      hash = "sha256-eO8MEPRb3uaCTtBznG+LaojXqlcj4eT422rQgpxopfo=";
+    })
+  ];
+
   configurePhase = ''
-    cp ${configHeader} config.h
+    ln -sf ${configHeader} config.h
   '';
 
   buildPhase = ''

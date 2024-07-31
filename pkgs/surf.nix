@@ -2,9 +2,9 @@
 
 with pkgs; stdenv.mkDerivation rec {
   name = "surf";
-  src = fetchGit {
-    url = "https://git.suckless.org/surf";
-    rev = "9ef79bf7106496c736ba613c51d2fd5af9d873a8";
+  src = fetchurl {
+    url = https://dl.suckless.org/surf/surf-2.1.tar.gz;
+    hash = "sha256-cuWCkguiWmRiA+k8LSMx2H8DA3ooiU1sfpmvAO4EMlc=";
   };
 
   nativeBuildInputs = [
@@ -43,7 +43,7 @@ with pkgs; stdenv.mkDerivation rec {
   ];
 
   configurePhase = ''
-    cp ${configHeader} config.h
+    ln -sf ${configHeader} config.h
   '';
 
   buildPhase = ''

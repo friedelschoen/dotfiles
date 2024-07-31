@@ -2,9 +2,9 @@
 
 with pkgs; stdenv.mkDerivation rec {
   name = "tabbed";
-  src = fetchGit {
-    url = "https://git.suckless.org/tabbed";
-    rev = "7215169fbbb1f81c3bad49b847d1e5907f6ab70c";
+  src = fetchurl {
+    url = "https://dl.suckless.org/tools/tabbed-0.8.tar.gz";
+    hash = "sha256-lb3/zLBxCDBo0rVVwlJOnHxXybZElNRsaX5njUmgo9c=";
   };
 
   buildInputs = [
@@ -12,7 +12,7 @@ with pkgs; stdenv.mkDerivation rec {
   ];
 
   configurePhase = ''
-    cp ${configHeader} config.h
+    ln -sf ${configHeader} config.h
   '';
 
   buildPhase = ''

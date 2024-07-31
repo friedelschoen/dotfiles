@@ -1,0 +1,144 @@
+diff --git a/config.def.h b/config.def.h
+index d805331..c37c675 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -6,6 +6,9 @@ const unsigned int interval = 1000;
+ /* text to show if no value can be retrieved */
+ static const char unknown_str[] = "n/a";
+ 
++/* if message is displayed, last max cycles, set to 0 to disable listening */
++const static int maxmsgcycle = 5;
++
+ /* maximum output string length */
+ #define MAXLEN 2048
+ 
+diff --git a/slstatus.c b/slstatus.c
+index fd31313..b9f8784 100644
+--- a/slstatus.c
++++ b/slstatus.c
+@@ -1,10 +1,13 @@
+ /* See LICENSE file for copyright and license details. */
+ #include <errno.h>
++#include <fcntl.h>
+ #include <signal.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <time.h>
++#include <unistd.h>
++#include <poll.h>
+ #include <X11/Xlib.h>
+ 
+ #include "arg.h"
+@@ -13,6 +16,7 @@
+ 
+ struct arg {
+ 	const char *(*func)(const char *);
++	int (*doenable)(const char *);
+ 	const char *fmt;
+ 	const char *args;
+ };
+@@ -21,6 +25,16 @@ char buf[1024];
+ static volatile sig_atomic_t done;
+ static Display *dpy;
+ 
++int always(const char *unused) {
++	(void)unused;
++	return 1;
++}
++
++int never(const char *unused) {
++	(void)unused;
++	return 0;
++}
++
+ #include "config.h"
+ 
+ static void
+@@ -38,10 +52,25 @@ difftimespec(struct timespec *res, struct timespec *a, struct timespec *b)
+ 	               (a->tv_nsec < b->tv_nsec) * 1E9;
+ }
+ 
++static int
++getnotify(int fifo, char* buffer, size_t size)
++{
++	struct pollfd fds = { fifo, POLLIN, 0 };
++
++	if (poll(&fds, 1, 0) <= 0)
++		return 0;
++
++	int len = 0;
++	while (read(fifo, buffer + len, 1) > 0 && buffer[len] != '\n' && len < size)
++		len++;
++	buffer[len] = '\0';
++	return len;
++}
++
+ static void
+ usage(void)
+ {
+-	die("usage: %s [-v] [-s] [-1]", argv0);
++	die("usage: %s [-v] [-s] [-1] [-p fifo]", argv0);
+ }
+ 
+ int
+@@ -51,8 +80,11 @@ main(int argc, char *argv[])
+ 	struct timespec start, current, diff, intspec, wait;
+ 	size_t i, len;
+ 	int sflag, ret;
++	int fifo, msgcycle = 0;
+ 	char status[MAXLEN];
+ 	const char *res;
++	const char *fifopath = NULL;
++	char *nl;
+ 
+ 	sflag = 0;
+ 	ARGBEGIN {
+@@ -64,6 +96,9 @@ main(int argc, char *argv[])
+ 	case 's':
+ 		sflag = 1;
+ 		break;
++	case 'p':
++		fifopath = EARGF(usage());
++		break;
+ 	default:
+ 		usage();
+ 	} ARGEND
+@@ -78,6 +113,9 @@ main(int argc, char *argv[])
+ 	act.sa_flags |= SA_RESTART;
+ 	sigaction(SIGUSR1, &act, NULL);
+ 
++	if (fifopath && (fifo = open(fifopath, O_RDONLY)) == -1)
++		die("open(fifo): ");
++
+ 	if (!sflag && !(dpy = XOpenDisplay(NULL)))
+ 		die("XOpenDisplay: Failed to open display");
+ 
+@@ -85,8 +123,19 @@ main(int argc, char *argv[])
+ 		if (clock_gettime(CLOCK_MONOTONIC, &start) < 0)
+ 			die("clock_gettime:");
+ 
++		if (msgcycle > 0) {
++			msgcycle--;
++		} else if (fifopath && getnotify(fifo, status, sizeof(status)) > 0) {
++			if (!*status)
++				continue;
++		
++			msgcycle = maxmsgcycle;
++		} else {
+ 		status[0] = '\0';
+ 		for (i = len = 0; i < LEN(args); i++) {
++				if (!args[i].doenable(args[i].args))
++					continue;
++
+ 			if (!(res = args[i].func(args[i].args)))
+ 				res = unknown_str;
+ 
+@@ -95,6 +144,7 @@ main(int argc, char *argv[])
+ 				break;
+ 
+ 			len += ret;
++			}
+ 		}
+ 
+ 		if (sflag) {

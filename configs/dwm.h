@@ -33,14 +33,14 @@ static const int systraypinningfailfirst =
           display systray on the last monitor*/
 static const int showsystray = 1; /* 0 means no systray */
 static const char *fonts[] = {"Source Code Pro:size=9"};
-static const char *colors[][3] = { // light
+static const char *colors_[][3] = { // light
     /*               fg         bg         border   */
     [SchemeNorm] = {gray3, white, gray2},
     [SchemeSel] = {gray3, blue, blue},
     [SchemeUrg] = {gray3, orange, red},
     [3] = {gray3, orange, gray2},
     [4] = {gray3, green, gray2}};
-static const char *colors_[][3] = { // dark
+static const char *colors[][3] = { // dark
     /*               fg         bg         border   */
     [SchemeNorm] = {white, gray2, gray2},
     [SchemeSel] = {blue, gray3, blue},
@@ -106,11 +106,8 @@ static const Key keys[] = {
     {MODKEY, XK_Return, spawn, COMMAND("st")},
     {MODKEY | ShiftMask, XK_w, spawn, COMMAND("surf")},
     {MODKEY, XK_w, spawn, COMMAND("firefox")},
-    {MODKEY, XK_space, spawn,
-     COMMAND("dmenu_run", "-c", "-bh", "5", "-l", "20", "-g", "2")},
-    {MODKEY, XK_m, spawn,
-     SHELL("man -k . | dmenu -c -l 25 | cut -d' ' -f1-2 | sed -E 's/(\\S+) "
-           "\\((\\S+)\\)/\\2 \\1/' | xargs st -f 'SF Mono' -e man -s")},
+    {MODKEY, XK_space, spawn, COMMAND("dmenu_run")},
+    {MODKEY, XK_m, spawn, SHELL("man -k | dmenu -l 25 | cut -d' ' -f1-2 | sed -E 's/(\\S+) \\((\\S+)\\)/\\2 \\1/' | xargs st -f 'SF Mono' -e man -s")},
     {0, XF86XK_MonBrightnessUp, spawn, BACKLIGHT(monitor_backlight, "+5%")},
     {0, XF86XK_MonBrightnessDown, spawn, BACKLIGHT(monitor_backlight, "5%-")},
     {0, XF86XK_KbdBrightnessUp, spawn, BACKLIGHT(keyboard_backlight, "+5%")},
@@ -142,7 +139,6 @@ static const Key keys[] = {
     TAGKEYS(XK_3, 2),
     TAGKEYS(XK_4, 3),
     TAGKEYS(XK_5, 4),
-    {MODKEY | ShiftMask, XK_r, refresh, {0}},
     {MODKEY | ShiftMask, XK_q, quit, {0}},
 };
 
