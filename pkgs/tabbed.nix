@@ -16,4 +16,7 @@ mkSucklessPackage {
     xorg.libXft
   ];
 
+  patches = [
+    ../patches/tabbed-colorscheme.diff
+  ];
 }

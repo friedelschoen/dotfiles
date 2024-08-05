@@ -1,0 +1,89 @@
+diff --git a/config.def.h b/config.def.h
+index 51bb13d..d84a2ba 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -2,12 +2,13 @@
+ 
+ /* appearance */
+ static const char font[]        = "monospace:size=9";
+-static const char* normbgcolor  = "#222222";
+-static const char* normfgcolor  = "#cccccc";
+-static const char* selbgcolor   = "#555555";
+-static const char* selfgcolor   = "#ffffff";
+-static const char* urgbgcolor   = "#111111";
+-static const char* urgfgcolor   = "#cc0000";
++static const char *colors[][3] = { // dark
++    /*               fg         bg         border   */
++    [SchemeNorm] = {"#222222", "#222222", 0},
++    [SchemeSel] = {"#ffffff", "#555555", 0},
++    [SchemeUrg] = {"#cc0000", "#111111", 0},
++};
++
+ static const char before[]      = "<";
+ static const char after[]       = ">";
+ static const char titletrim[]   = "...";
+diff --git a/tabbed.c b/tabbed.c
+index 81be5e4..6a15001 100644
+--- a/tabbed.c
++++ b/tabbed.c
+@@ -51,6 +51,7 @@
+ enum { ColFG, ColBG, ColLast };       /* color */
+ enum { WMProtocols, WMDelete, WMName, WMState, WMFullscreen,
+        XEmbed, WMSelectTab, WMLast }; /* default atoms */
++enum { SchemeNorm, SchemeSel, SchemeUrg }; /* schemes */
+ 
+ typedef union {
+ 	int i;
+@@ -1037,12 +1038,12 @@ setup(void)
+ 			wy = dh + wy - wh - 1;
+ 	}
+ 
+-	dc.norm[ColBG] = getcolor(normbgcolor);
+-	dc.norm[ColFG] = getcolor(normfgcolor);
+-	dc.sel[ColBG] = getcolor(selbgcolor);
+-	dc.sel[ColFG] = getcolor(selfgcolor);
+-	dc.urg[ColBG] = getcolor(urgbgcolor);
+-	dc.urg[ColFG] = getcolor(urgfgcolor);
++	dc.norm[ColBG] = getcolor(colors[SchemeNorm][1]);
++	dc.norm[ColFG] = getcolor(colors[SchemeNorm][0]);
++	dc.sel[ColBG] = getcolor(colors[SchemeSel][1]);
++	dc.sel[ColFG] = getcolor(colors[SchemeSel][0]);
++	dc.urg[ColBG] = getcolor(colors[SchemeUrg][1]);
++	dc.urg[ColFG] = getcolor(colors[SchemeUrg][0]);
+ 	dc.drawable = XCreatePixmap(dpy, root, ww, wh,
+ 	                            DefaultDepth(dpy, screen));
+ 	dc.gc = XCreateGC(dpy, root, 0, 0);
+@@ -1307,10 +1308,10 @@ main(int argc, char *argv[])
+ 		wmname = EARGF(usage());
+ 		break;
+ 	case 'O':
+-		normfgcolor = EARGF(usage());
++		colors[SchemeNorm][0] = EARGF(usage());
+ 		break;
+ 	case 'o':
+-		normbgcolor = EARGF(usage());
++		colors[SchemeNorm][1] = EARGF(usage());
+ 		break;
+ 	case 'p':
+ 		pstr = EARGF(usage());
+@@ -1328,16 +1329,16 @@ main(int argc, char *argv[])
+ 		doinitspawn = False;
+ 		break;
+ 	case 'T':
+-		selfgcolor = EARGF(usage());
++		colors[SchemeSel][0] = EARGF(usage());
+ 		break;
+ 	case 't':
+-		selbgcolor = EARGF(usage());
++		colors[SchemeSel][1] = EARGF(usage());
+ 		break;
+ 	case 'U':
+-		urgfgcolor = EARGF(usage());
++		colors[SchemeUrg][0] = EARGF(usage());
+ 		break;
+ 	case 'u':
+-		urgbgcolor = EARGF(usage());
++		colors[SchemeUrg][1] = EARGF(usage());
+ 		break;
+ 	case 'v':
+ 		die("tabbed-"VERSION", © 2009-2016 tabbed engineers, "

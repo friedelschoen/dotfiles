@@ -2,18 +2,7 @@
 
 #include <X11/XF86keysym.h>
 
-static const char black[] = "#282828";
-static const char blue[] = "#83a598";  // focused window border
-static const char gray2[] = "#282828"; // unfocused window border
-static const char gray3[] = "#3c3836";
-static const char gray4[] = "#282828";
-static const char green[] = "#8ec07c";
-static const char orange[] = "#fe8019";
-static const char pink[] = "#d3869b";
-static const char red[] = "#fb4934";
-static const char white[] = "#ebdbb2";
-static const char yellow[] = "#b8bb26";
-static const char col_borderbar[] = "#1e2122";
+#include "theme.h"
 
 /* appearance */
 static const unsigned int borderpx = 2; /* border pixel of windows */
@@ -33,20 +22,16 @@ static const int systraypinningfailfirst =
           display systray on the last monitor*/
 static const int showsystray = 1; /* 0 means no systray */
 static const char *fonts[] = {"Source Code Pro:size=9"};
-static const char *colors_[][3] = { // light
-    /*               fg         bg         border   */
-    [SchemeNorm] = {gray3, white, gray2},
-    [SchemeSel] = {gray3, blue, blue},
-    [SchemeUrg] = {gray3, orange, red},
-    [3] = {gray3, orange, gray2},
-    [4] = {gray3, green, gray2}};
 static const char *colors[][3] = { // dark
+
+// #104b51, #3b484d, #674448, #924144 and #bd3d3f.
     /*               fg         bg         border   */
-    [SchemeNorm] = {white, gray2, gray2},
-    [SchemeSel] = {blue, gray3, blue},
-    [SchemeUrg] = {orange, gray3, red},
+    [SchemeNorm] = {white, "#3b484d", "#3b484d"},
+    [SchemeSel] = {black, "#bd3d3f", "#bd3d3f"},
+    [SchemeUrg] = {orange, gray3, orange},
     [3] = {gray3, orange, gray2},
-    [4] = {gray3, green, gray2}};
+    [4] = {gray3, green, gray2}
+  };
 
 static const char dwmrc[] = ".dwmrc";
 

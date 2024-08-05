@@ -9,13 +9,14 @@ in
 stdenv.mkDerivation (
   (builtins.removeAttrs args [ "configHeader" "extraConfig" ]) // {
 
-  inherit configurePhase;
+    inherit configurePhase;
 
-  buildPhase = ''
-    make all
-  '';
+    buildPhase = ''
+      make all
+    '';
 
-  installPhase = ''
-    make PREFIX=$out install
-  '';
-})
+    installPhase = ''
+      make PREFIX=$out install
+    '';
+  }
+)

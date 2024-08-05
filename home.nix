@@ -23,6 +23,8 @@ rec {
     # use nix' nix, it is more up-to-date
     pkgs.nix
 
+    pkgs.nixpkgs-fmt
+
     (pkgs.nerdfonts.override { fonts = [ "CascadiaCode" "FiraCode" ]; })
   ];
 
@@ -119,6 +121,7 @@ rec {
     extraConfig = builtins.readFile dotfiles/vimrc;
   };
 
+  targets.genericLinux.enable = true;
 
   home.stateVersion = "24.05"; # Please read the comment before changing.
 }
