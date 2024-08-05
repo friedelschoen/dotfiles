@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> { }, system ? builtins.currentSystem }:
+{ pkgs ? import <nixpkgs> { } }:
 
 
 { name, services, supervise }:

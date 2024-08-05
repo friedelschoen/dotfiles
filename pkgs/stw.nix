@@ -1,30 +1,23 @@
-{ pkgs ? import <nixpkgs> { }, configHeader }:
+{ pkgs
+, fetchgit
+, mkSucklessPackage ? pkgs.callPackage ../common/suckless-pkg.nix { }
+}:
 
-with pkgs; stdenv.mkDerivation {
+mkSucklessPackage {
   name = "stw";
   src = fetchGit {
     url = "https://github.com/sineemore/stw";
     rev = "54377209c6313c9637aab904d06c5c383414a5ee";
   };
 
-  nativeBuildInputs = [
+  configHeader = ../configs/stw.h;
+
+  nativeBuildInputs = with pkgs; [
     pkg-config
   ];
 
-  buildInputs = [
+  buildInputs = with pkgs; [
     xorg.libXft
     fontconfig
   ];
-
-  configurePhase = ''
-    ln -sf ${configHeader} config.h
-  '';
-
-  buildPhase = ''
-    make all
-  '';
-
-  installPhase = ''
-    make PREFIX=$out install
-  '';
 }

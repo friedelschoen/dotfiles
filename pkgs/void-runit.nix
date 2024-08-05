@@ -4,7 +4,7 @@ with pkgs; stdenv.mkDerivation rec {
   name = "runit-utils";
   version = "20231124";
 
-  src = pkgs.fetchzip {
+  src = fetchzip {
     url = "https://github.com/void-linux/void-runit/archive/refs/tags/${version}.tar.gz";
     hash = "sha256-XGQcRaaGntAx4HFLTLZRjMGcejtJyJQEF/yXfQmzrZs=";
   };

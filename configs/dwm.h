@@ -107,7 +107,7 @@ static const Key keys[] = {
     {MODKEY | ShiftMask, XK_w, spawn, COMMAND("surf")},
     {MODKEY, XK_w, spawn, COMMAND("firefox")},
     {MODKEY, XK_space, spawn, COMMAND("dmenu_run")},
-    {MODKEY, XK_m, spawn, SHELL("man -k | dmenu -l 25 | cut -d' ' -f1-2 | sed -E 's/(\\S+) \\((\\S+)\\)/\\2 \\1/' | xargs st -f 'SF Mono' -e man -s")},
+    {MODKEY, XK_m, spawn, SHELL("man -k . | dmenu -l 25 | cut -d' ' -f1-2 | sed -E 's/(\\S+) \\((\\S+)\\)/\\2 \\1/' | xargs st -f 'SF Mono' -e man -s")},
     {0, XF86XK_MonBrightnessUp, spawn, BACKLIGHT(monitor_backlight, "+5%")},
     {0, XF86XK_MonBrightnessDown, spawn, BACKLIGHT(monitor_backlight, "5%-")},
     {0, XF86XK_KbdBrightnessUp, spawn, BACKLIGHT(keyboard_backlight, "+5%")},

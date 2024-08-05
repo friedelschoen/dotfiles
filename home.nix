@@ -3,22 +3,22 @@
 rec {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "friedel";
-  home.homeDirectory = "/home/friedel";
+  home.username = "friedel"; # EDIT ME
+  home.homeDirectory = "/home/friedel"; # EDIT ME
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    (import pkgs/dmenu.nix { configHeader = configs/dmenu.h; })
-    (import pkgs/dwm.nix { configHeader = configs/dwm.h; })
-    (import pkgs/pretty-svstat.nix { })
-    (import pkgs/slstatus.nix { configHeader = configs/slstatus.h; })
-    (import pkgs/st.nix { configHeader = configs/st.h; })
-    (import pkgs/void-runit.nix { })
-    (import pkgs/weakbox.nix { })
-    (import pkgs/stw.nix { configHeader = configs/stw.h; })
-    (import pkgs/tabbed.nix { configHeader = configs/tabbed.h; })
-    (import pkgs/surf.nix { configHeader = configs/surf.h; })
+    (pkgs.callPackage pkgs/dmenu.nix { })
+    (pkgs.callPackage pkgs/dwm.nix { })
+    (pkgs.callPackage pkgs/pretty-svstat.nix { })
+    (pkgs.callPackage pkgs/slstatus.nix { })
+    (pkgs.callPackage pkgs/st.nix { })
+    (pkgs.callPackage pkgs/void-runit.nix { })
+    (pkgs.callPackage pkgs/weakbox.nix { })
+    (pkgs.callPackage pkgs/stw.nix { })
+    (pkgs.callPackage pkgs/tabbed.nix { })
+    (pkgs.callPackage pkgs/surf.nix { })
 
     # use nix' nix, it is more up-to-date
     pkgs.nix
@@ -37,6 +37,7 @@ rec {
 
     ".xinitrc".source = dotfiles/xinitrc;
     ".Xresources".source = dotfiles/xresources;
+    "home-manager".source = ./.;
   };
 
   home.sessionVariables = {
