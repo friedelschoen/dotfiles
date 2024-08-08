@@ -1,4 +1,7 @@
-{ pkgs, fetchurl, mkSucklessPackage ? pkgs.callPackage ../common/suckless-pkg.nix { } }:
+{ pkgs
+, fetchurl
+, mkSucklessPackage ? pkgs.callPackage ../common/suckless-pkg.nix { }
+}:
 
 mkSucklessPackage {
   name = "tabbed";

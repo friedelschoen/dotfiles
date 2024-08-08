@@ -66,6 +66,16 @@ with pkgs; [
     '';
   }
   {
+    name = "cbatticon";
+    enable = true;
+    setup = "";
+    run = writeScript "cbatticon-run" ''
+      #!/bin/sh
+
+      exec cbatticon
+    '';
+  }
+  {
     name = "slstatus";
     enable = true;
     setup = "";

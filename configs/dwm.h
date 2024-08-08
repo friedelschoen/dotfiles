@@ -23,12 +23,10 @@ static const int systraypinningfailfirst =
 static const int showsystray = 1; /* 0 means no systray */
 static const char *fonts[] = {"Source Code Pro:size=9"};
 static const char *colors[][3] = { // dark
-
-// #104b51, #3b484d, #674448, #924144 and #bd3d3f.
     /*               fg         bg         border   */
-    [SchemeNorm] = {white, "#3b484d", "#3b484d"},
-    [SchemeSel] = {black, "#bd3d3f", "#bd3d3f"},
-    [SchemeUrg] = {orange, gray3, orange},
+    [SchemeNorm] = {gray2, white, gray2},
+    [SchemeSel] = {gray2, blue, blue},
+    [SchemeUrg] = {white, orange, orange},
     [3] = {gray3, orange, gray2},
     [4] = {gray3, green, gray2}
   };

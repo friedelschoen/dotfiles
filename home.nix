@@ -19,6 +19,7 @@ rec {
     (pkgs.callPackage pkgs/stw.nix { })
     (pkgs.callPackage pkgs/tabbed.nix { })
     (pkgs.callPackage pkgs/surf.nix { })
+    (pkgs.callPackage pkgs/textselect.nix { })
 
     # use nix' nix, it is more up-to-date
     pkgs.nix

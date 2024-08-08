@@ -5,9 +5,11 @@
 stdenv.mkDerivation rec {
   name = "weakbox";
   src = fetchGit {
-    url = "https://git.friedelschoen.io/weakbox";
-    rev = "8f7e0468e1fc92e57c8a77f1a49a67846fcce114";
+    url = "https://github.com/friedelschoen/textselect";
+    rev = "6131d1ae07f5af71f2df14a5f82a9e64b7ea5ebe";
   };
+
+  buildInputs = with pkgs;  [ ncurses ];
 
   buildPhase = ''
     make all

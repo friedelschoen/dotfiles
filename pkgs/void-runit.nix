@@ -1,6 +1,9 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs
+, stdenv
+, fetchzip
+}:
 
-with pkgs; stdenv.mkDerivation rec {
+stdenv.mkDerivation rec {
   name = "runit-utils";
   version = "20231124";
 

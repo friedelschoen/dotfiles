@@ -1,7 +1,6 @@
 { pkgs
 , fetchurl
 , mkSucklessPackage ? pkgs.callPackage ../common/suckless-pkg.nix { }
-,
 }:
 
 mkSucklessPackage rec {
