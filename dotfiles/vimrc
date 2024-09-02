@@ -2,7 +2,7 @@
 let g:gruvbox_italic=1
 
 colorscheme one
-set background=dark
+set background=light
 set termguicolors
 let g:airline_theme='one'
 

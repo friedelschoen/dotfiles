@@ -34,7 +34,7 @@ rec {
   home.file = {
     ".xservice".source = (import common/make-service.nix { }) rec {
       name = "home-service";
-      services = import ./services.nix { inherit pkgs; };
+      services = pkgs.callPackage ./services.nix {};
       supervise = sv: "/tmp/${name}/supervise.${sv}";
     };
 
@@ -45,7 +45,7 @@ rec {
 
   home.sessionVariables = {
     EDITOR = "vim";
-    PLAN9 = "${pkgs.plan9port}/plan9";
+    PLAN9 = "$HOME/plan9";
     WEAKBOX = "$HOME/.glibc";
     HOMEMANAGER = ./.;
   };
@@ -69,11 +69,12 @@ rec {
     syntaxHighlighting.enable = true;
 
     shellAliases = {
-      ls = "${pkgs.eza}/bin/eza";
-      clip = "${pkgs.xclip}/bin/xclip -selection clipboard";
-      neofetch = "${pkgs.fastfetch}/bin/fastfetch";
-      ccat = "${pkgs.bat}/bin/bat --style=plain --paging=never --theme=OneHalfDark";
+      ls = "eza";
+      clip = "xclip -selection clipboard";
+      neofetch = "fastfetch";
+      ccat = "bat --style=plain --paging=never --theme=OneHalfDark";
       hm = "home-manager";
+      cuts = "cut -d ' ''"; # cut by space
     };
 
     history = {
@@ -113,7 +114,7 @@ rec {
       ale
     ];
     settings = {
-      background = "dark";
+      background = "light";
       number = true;
       tabstop = 4;
       shiftwidth = 4;

@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char font[] = "Fira Code:size=9";
+static char font[] = "Monaco:size=10";
 static int borderpx = 5;
 
 /*
@@ -146,7 +146,7 @@ static const char **const themes[] = {
 
         }};
 
-static const char *colorname__[] = /* themes[GRUVBOX_DARK]; */ {
+static const char *colorname[] = /* GRUVBOX_LIGHT */ {
     // normal colors
     "#708089", "#f85552", "#8da101", "#dfa000", "#3a94c5", "#df69ba", "#35a77c",
     "#939f91",
@@ -155,12 +155,12 @@ static const char *colorname__[] = /* themes[GRUVBOX_DARK]; */ {
     "#829181", "#e66868", "#93b259", "#dfa000", "#3a94c5", "#df69ba", "#35a77c",
     "#a6b0a0",
 
-    [FOREGROUND] = "#5c6a72", // foreground
-    [BACKGROUND] = "#fdf6e3", // background
+    [FOREGROUND] = "#282828", // "#5c6a72", // foreground
+    [BACKGROUND] = "#ffffea", // "#fdf6e3", // background
 
 };
 
-static const char *colorname[] = { // real gruvbox dark
+static const char *colornam__e[] = { // real gruvbox dark
     "#665c54",
     "#cc241d",
     "#98971a",
@@ -177,8 +177,10 @@ static const char *colorname[] = { // real gruvbox dark
     "#d3869b",
     "#8ec07c",
     "#bdae93",
-    [FOREGROUND] = "#ebdbb2",
-    [BACKGROUND] = "#282828"};
+	// [FOREGROUND] = "#FFFFea",
+	[FOREGROUND] = "#ebdbb2",
+    [BACKGROUND] = "#282828"
+};
 
 static const char *colorname___[] = {
     "#3e3e3e", "#970b16", "#07962a", "#f7edc7", "#003e8a", "#e94691", "#89d1ec",

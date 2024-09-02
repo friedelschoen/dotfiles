@@ -21,15 +21,26 @@ static const int systraypinningfailfirst =
     1; /* 1: if pinning fails, display systray on the first monitor, False:
           display systray on the last monitor*/
 static const int showsystray = 1; /* 0 means no systray */
-static const char *fonts[] = {"Source Code Pro:size=9"};
-static const char *colors[][3] = { // dark
+static const char *fonts[] = {"Monaco:size=9"};
+static const char *colors__[][3] = { // dark
     /*               fg         bg         border   */
-    [SchemeNorm] = {gray2, white, gray2},
-    [SchemeSel] = {gray2, blue, blue},
-    [SchemeUrg] = {white, orange, orange},
-    [3] = {gray3, orange, gray2},
-    [4] = {gray3, green, gray2}
+    [SchemeNorm]       = { white,   gray2,   gray2  },
+    [SchemeSel]        = { blue,     gray3,   blue  },
+    [SchemeUrg]        = { orange,  gray3,   red    },
+    [3]                = { gray3, orange, gray2 },
+    [4]                = { gray3,   green,   gray2  }
   };
+
+
+
+static const char *colors[][3] = { 
+    /*               fg         bg         border   */
+    [SchemeNorm]       = { "#000000", "#eaffea", "#9eeeee" },  // fg = white, bg = gray2, border = gray2
+    [SchemeSel]        = { "#eaffea", "#448844", "#55aaaa" },  // fg = blue, bg = gray3, border = blue
+    [SchemeUrg]        = { "#eaffea", "#999999", "#ff0000" },  // fg = orange (light green), bg = gray3, border = red
+    [3]                = { "#999999", "#eaffea", "#cccccc" },  // fg = gray3, bg = orange (light green), border = gray2
+    [4]                = { "#999999", "#448844", "#cccccc" }   // fg = gray3, bg = green, border = gray2
+};
 
 static const char dwmrc[] = ".dwmrc";
 

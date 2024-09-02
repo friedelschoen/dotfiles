@@ -8,8 +8,8 @@ static int min_width = 500; /* minimum width when centered */
 /* -fn option overrides fonts[0]; default X11 font or font set */
 static const char *prompt = NULL; /* -p  option; prompt to the left of input field */
 static const char *dynamic = NULL; /* -dy option; dynamic command to run on input change */
-static const char *fonts[] = {"Source Code Pro:size=9"};
-static const char *colors[][3] = {
+static const char *fonts[] = {"Monaco:size=9"};
+static const char *colors_[][3] = {
     /*               fg         bg         border   */
     [SchemeNorm] = {white, gray3, blue},
     [SchemeSel] = {gray4, blue, gray3},
@@ -17,6 +17,16 @@ static const char *colors[][3] = {
 
     [SchemeSelHighlight] = {blue, gray4},
     [SchemeNormHighlight] = {gray3, white},
+};
+
+
+static const char *colors[][3] = {
+    /*               fg         bg         border   */
+    [SchemeNorm]       = { "#000000", "#eaffea", "#9eeeee" },  // fg = white, bg = gray2, border = gray2
+    [SchemeSel]        = { "#eaffea", "#448844", "#55aaaa" },  // fg = blue, bg = gray3, border = blue
+    [SchemeOut]        = { "#eaffea", "#999999", "#ff0000" },  // fg = orange (light green), bg = gray3, border = red
+    [3]                = { "#999999", "#eaffea", "#cccccc" },  // fg = gray3, bg = orange (light green), border = gray2
+    [4]                = { "#999999", "#448844", "#cccccc" }   // fg = gray3, bg = green, border = gray2
 };
 
 /* -l and -g options; controls number of lines and columns in grid if > 0 */

@@ -1,6 +1,12 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ writeScript, ... }:
 
-with pkgs; [
+
+let
+  stw-background = "#4d4d4d";
+  stw-foreground = "#eeeeee";
+  stw-font = "Monaco:size=9";
+
+in [
   {
     name = "9wm";
     enable = false;
@@ -66,10 +72,10 @@ with pkgs; [
     '';
   }
   {
-    name = "cbatticon";
+    name = "battery-applet";
     enable = true;
     setup = "";
-    run = writeScript "cbatticon-run" ''
+    run = writeScript "battery-applet-run" ''
       #!/bin/sh
 
       exec cbatticon
@@ -118,7 +124,7 @@ with pkgs; [
     run = writeScript "stw-service-run" ''
       #!/bin/sh
 
-      exec stw -p 1 -b '#ebdbb2' -f '#3c3836' -F 'Source Code Pro:size=9' -B 10 -y 20 sh -c 'echo -- services -- ; psv /var/service/* ~/.xservice/* 2> /dev/null | sort -k2,2 -k1,1'
+      exec stw -b '${stw-background}' -f '${stw-foreground}' -F '${stw-font}' -p 1 -B 10 -y 20 sh -c 'echo -- services -- ; psv /var/service/* ~/.xservice/* 2> /dev/null | sort -k2,2 -k1,1'
     '';
   }
   {
@@ -128,7 +134,7 @@ with pkgs; [
     run = writeScript "stw-xbps-run" ''
       #!/bin/sh
 
-      exec stw -b '#ebdbb2' -f '#3c3836' -F 'Source Code Pro:size=9' -B 10 -p 120 -y 100% -Y -100% sh -c 'echo -- updates -- && xbps-install -Mun | cut -d" " -f1'
+      exec stw -b '${stw-background}' -f '${stw-foreground}' -F '${stw-font}' -B 10 -p 120 -y 100% -Y -100% sh -c 'echo -- updates -- && xbps-install -Mun | cut -d" " -f1'
     '';
   }
   {
