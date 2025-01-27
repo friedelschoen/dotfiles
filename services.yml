@@ -1,0 +1,127 @@
+9wm:
+  enable: false
+  run: |
+    #!/bin/sh
+
+    SVDIR=.. sv check xserver > /dev/null || exit 1
+
+    cd $HOMEs
+    exec 9wm
+
+battery-applet:
+  enable: true
+  run: |
+    #!/bin/sh
+
+    exec cbatticon
+
+blueman-applet:
+  enable: true
+  run: |
+    #!/bin/sh
+
+    exec blueman-applet
+
+dbus-session:
+  enable: true
+  run: |
+    #!/bin/sh
+
+    exec dbus-daemon --nofork --session
+
+dwm:
+  enable: true
+  run: |
+    #!/bin/sh
+
+    cd $HOME
+    exec dwm
+
+nm-applet:
+  enable: true
+  run: |
+    #!/bin/sh
+
+    exec nm-applet
+
+pa-applet:
+  enable: true
+  run: |
+    #!/bin/sh
+
+    exec pa-applet
+
+slstatus:
+  enable: true
+  run: |
+    #!/bin/sh
+
+    FIFO=/tmp/slstatus.fifo
+
+    [ -p $FIFO ] || rm -f $FIFO
+    mkfifo $FIFO
+
+    exec slstatus -p $FIFO
+
+slstatus-xbps:
+  enable: true
+  run: |
+    #!/bin/bash
+
+    OUTPUT=/tmp/xbps-updates.txt
+
+    while true; do
+        updates=$(xbps-install -Mun | wc -l)
+
+        if [ $updates -ne 0 ]; then
+            echo $updates > $OUTPUT
+        else
+            echo up-to-date > $OUTPUT
+        fi
+        sleep 120
+    done
+
+stw-service:
+  enable: true
+  run: >
+    #!/bin/sh
+
+
+    exec stw -b '#4d4d4d' -f '#eeeeee' -F 'Monaco:size=9' -p 1 -B 10 -y 20 sh -c
+    'echo -- services -- ; psv /var/service/* ~/.xservice/* 2> /dev/null | sort
+    -k2,2 -k1,1'
+
+stw-xbps:
+  enable: true
+  run: >
+    #!/bin/sh
+
+
+    exec stw -b '#4d4d4d' -f '#eeeeee' -F 'Monaco:size=9' -B 10 -p 120 -y 100%
+    -Y -100% sh -c 'echo -- updates -- && xbps-install -Mun | cut -d" " -f1'
+
+tiramisu:
+  enable: true
+  run: >
+    #!/bin/sh
+
+
+    SVDIR=.. sv check slstatus > /dev/null || exit 1
+
+
+    exec tiramisu -o '\\x04#source\\x05#summary: #body\\n' | xargs -i printf
+    '%b' '{}' > /tmp/slstatus.fifo
+
+udiskie:
+  enable: true
+  run: |
+    #!/bin/sh
+
+    exec udiskie -ant
+
+xfce-polkit:
+  enable: true
+  run: |
+    #!/bin/sh
+
+    exec /usr/libexec/xfce-polkit

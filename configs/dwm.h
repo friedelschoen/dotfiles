@@ -2,7 +2,18 @@
 
 #include <X11/XF86keysym.h>
 
-#include "theme.h"
+static const char black[] = "#282828";
+static const char blue[] = "#83a598";  // focused window border
+static const char gray2[] = "#282828"; // unfocused window border
+static const char gray3[] = "#3c3836";
+static const char gray4[] = "#282828";
+static const char green[] = "#8ec07c";
+static const char orange[] = "#fe8019";
+static const char pink[] = "#d3869b";
+static const char red[] = "#fb4934";
+static const char white[] = "#ebdbb2";
+static const char yellow[] = "#b8bb26";
+static const char col_borderbar[] = "#1e2122";
 
 /* appearance */
 static const unsigned int borderpx = 2; /* border pixel of windows */
@@ -10,7 +21,7 @@ static const unsigned int snap = 10;    /* snap pixel */
 static const int horizpadbar = 10;      /* horizontal padding for statusbar */
 static const int vertpadbar = 10;       /* vertical padding for statusbar */
 static const int showbar = 1;           /* 0 means no bar */
-static const int topbar = 1;            /* 0 means bottom bar */
+static const int topbar = 0;            /* 0 means bottom bar */
 static const unsigned int systraypinning =
     0; /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor
           X */
@@ -22,24 +33,27 @@ static const int systraypinningfailfirst =
           display systray on the last monitor*/
 static const int showsystray = 1; /* 0 means no systray */
 static const char *fonts[] = {"Monaco:size=9"};
-static const char *colors__[][3] = { // dark
+static const char *colors[][3] = { // dark
     /*               fg         bg         border   */
-    [SchemeNorm]       = { white,   gray2,   gray2  },
-    [SchemeSel]        = { blue,     gray3,   blue  },
-    [SchemeUrg]        = { orange,  gray3,   red    },
-    [3]                = { gray3, orange, gray2 },
-    [4]                = { gray3,   green,   gray2  }
-  };
+    [SchemeNorm] = {white, gray2, gray2},
+    [SchemeSel] = {blue, gray3, blue},
+    [SchemeUrg] = {orange, gray3, red},
+    [3] = {gray3, orange, gray2},
+    [4] = {gray3, green, gray2}};
 
-
-
-static const char *colors[][3] = { 
+static const char *colors__[][3] = {
     /*               fg         bg         border   */
-    [SchemeNorm]       = { "#000000", "#eaffea", "#9eeeee" },  // fg = white, bg = gray2, border = gray2
-    [SchemeSel]        = { "#eaffea", "#448844", "#55aaaa" },  // fg = blue, bg = gray3, border = blue
-    [SchemeUrg]        = { "#eaffea", "#999999", "#ff0000" },  // fg = orange (light green), bg = gray3, border = red
-    [3]                = { "#999999", "#eaffea", "#cccccc" },  // fg = gray3, bg = orange (light green), border = gray2
-    [4]                = { "#999999", "#448844", "#cccccc" }   // fg = gray3, bg = green, border = gray2
+    [SchemeNorm] = {"#000000", "#eaffea",
+                    "#9eeeee"}, // fg = white, bg = gray2, border = gray2
+    [SchemeSel] = {"#eaffea", "#448844",
+                   "#55aaaa"}, // fg = blue, bg = gray3, border = blue
+    [SchemeUrg] =
+        {"#eaffea", "#999999",
+         "#ff0000"}, // fg = orange (light green), bg = gray3, border = red
+    [3] = {"#999999", "#eaffea",
+           "#cccccc"}, // fg = gray3, bg = orange (light green), border = gray2
+    [4] = {"#999999", "#448844",
+           "#cccccc"} // fg = gray3, bg = green, border = gray2
 };
 
 static const char dwmrc[] = ".dwmrc";
@@ -92,7 +106,7 @@ static const Layout layouts[] = {
 #define BACKLIGHT(device, value)                                               \
   COMMAND("brightnessctl", "-q", "-d", device, "set", value)
 
-#define monitor_backlight "acpi_video0"
+#define monitor_backlight "intel_backlight"
 #define keyboard_backlight "smc::kbd_backlight"
 
 static const Key keys[] = {
@@ -101,7 +115,9 @@ static const Key keys[] = {
     {MODKEY | ShiftMask, XK_w, spawn, COMMAND("surf")},
     {MODKEY, XK_w, spawn, COMMAND("firefox")},
     {MODKEY, XK_space, spawn, COMMAND("dmenu_run")},
-    {MODKEY, XK_m, spawn, SHELL("man -k . | dmenu -l 25 | cut -d' ' -f1-2 | sed -E 's/(\\S+) \\((\\S+)\\)/\\2 \\1/' | xargs st -f 'SF Mono' -e man -s")},
+    {MODKEY, XK_m, spawn,
+     SHELL("man -k . | dmenu -l 25 | cut -d' ' -f1-2 | sed -E 's/(\\S+) "
+           "\\((\\S+)\\)/\\2 \\1/' | xargs st -f 'SF Mono' -e man -s")},
     {0, XF86XK_MonBrightnessUp, spawn, BACKLIGHT(monitor_backlight, "+5%")},
     {0, XF86XK_MonBrightnessDown, spawn, BACKLIGHT(monitor_backlight, "5%-")},
     {0, XF86XK_KbdBrightnessUp, spawn, BACKLIGHT(keyboard_backlight, "+5%")},

@@ -68,10 +68,13 @@ static const char unknown_str[] = "n/a";
  */
 
 //│ 
+
+static const char wifi[] = "wlp2s0b1";
+
 static const struct arg args[] = {
 	/* function format             argument */
-	{ netspeed_rx, always,    "󰛀 %8sB/s", "wlp2s0" },
-	{ netspeed_tx, always, " | 󰛃 %8sB/s", "wlp2s0" },
+	{ netspeed_rx, always,    "󰛀 %8sB/s", wifi },
+	{ netspeed_tx, always, " | 󰛃 %8sB/s", wifi },
 	{ cat,         always, " | 󰏗 %s",     "/tmp/xbps-updates.txt" },
 	// { ram_perc,    always, " | 󰍛 %3s%%",  NULL },
 	{ cpu_perc,    always, " |  %3s%%",  NULL },

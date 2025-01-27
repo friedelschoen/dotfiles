@@ -1,8 +1,0 @@
-#!/bin/sh
-
-# this script prints all binaries found in $PATH
-# for some reason does original dmenu_path not work
-echo $PATH \
-    | xargs -i -d: \
-      find {} -maxdepth 1 -type f -executable -printf '%P\n' \
-    | sort -u

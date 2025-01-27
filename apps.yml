@@ -1,0 +1,125 @@
+dmenu:
+  url: https://dl.suckless.org/tools/dmenu-5.2.tar.gz
+  checksum: 3829528c849db6f903676fe7e6a48f3735505b6d
+
+  config: dmenu.h
+  patches:
+    - dmenu-dynamicoptions.diff
+    - dmenu-bar-height-5.2.diff
+    - dmenu-caseinsensitive-5.0.diff
+    - dmenu-highlight-4.9.diff
+    - dmenu-numbers-20220512-28fb3e2.diff
+
+  install: |
+    make all
+    make PREFIX=$out install
+
+dwm:
+  url: https://dl.suckless.org/dwm/dwm-6.5.tar.gz
+  checksum: 882ec34a425b1b5b75c77474252545f7774154dc
+
+  config: dwm.h
+  patches:
+    - dwm-statusbar.diff
+    - dwm-activetagindicatorbar-6.2.diff
+    - dwm-6.2-urg-border.diff
+
+  install: |
+    make all
+    make PREFIX=$out install
+
+gitin:
+  url: https://github.com/friedelschoen/gitin/archive/9585e3f2389700f21154c0f14507ed8b91cd3b14.tar.gz
+  checksum: 9eaba901de8af8df97176912efa3626141167189
+
+  install: |
+    make all
+    make PREFIX=$out install
+
+pretty-svstat:
+  url: https://github.com/friedelschoen/pretty-sv/archive/ec27736c57aebe3055ebc95a34aa55a356552ff2.tar.gz
+  checksum: f5e3cac864830d73ec52e6261027df12e9247805
+
+  install: |
+    make all
+    make PREFIX=$out install
+
+slstatus:
+  url: https://dl.suckless.org/tools/slstatus-1.0.tar.gz
+  checksum: 3e02d9bbe6990055f52c9cdf7b6e63e7c37bae37
+
+  config: slstatus.h
+  patches:
+    - slstatus-battery-remaining.diff
+    - slstatus-notify.diff
+
+  install: |
+    make all
+    make PREFIX=$out install
+
+st:
+  url: https://dl.suckless.org/st/st-0.9.2.tar.gz
+  checksum: e654f52356ecfa7fa7773e139471c30241264e61
+
+  config: st.h
+  patches:
+    - st-remove-terminfo.diff
+    - st-scrollback-ringbuffer.diff
+    - st-anysize-20220718-baa9357.diff
+
+  install: |
+    make all
+    make PREFIX=$out install
+
+stw:
+  url: https://github.com/sineemore/stw/archive/54377209c6313c9637aab904d06c5c383414a5ee.tar.gz
+  checksum: 93717eea6254fac4c372977cacfd637610a929e3
+
+  config: stw.h
+
+  install: |
+    make all
+    make PREFIX=$out install
+
+surf:
+  url: https://dl.suckless.org/surf/surf-2.1.tar.gz
+  checksum: ea5f398f305fcef331d9ab58345038f9239ccaa5
+
+  config: surf.h
+  patches:
+    - surf-2.0-homepage.diff
+    - surf-2.1-history.diff
+    - surf-clipboard-20200112-a6a8878.diff
+    - surf-searchengines-20220804-609ea1c.diff
+    - surf-short-title-20210206-7dcce9e.diff
+
+  install: |
+    make all
+    make PREFIX=$out install
+
+tabbed:
+  url: https://dl.suckless.org/tools/tabbed-0.8.tar.gz
+  checksum: 601205f0f6e2261165ed50ce7c152700ba48b0a5
+
+  config: tabbed.h
+  patches:
+    - tabbed-colorscheme.diff
+
+  install: |
+    make all
+    make PREFIX=$out install
+
+textselect:
+  url: https://github.com/friedelschoen/textselect/archive/a3deb1b53a2cc67b0c53bb3391f32e166546782c.tar.gz
+  checksum: 592776a38cc479eb6484dbd37eb8dd88c3ddbc27
+
+  install: |
+    make all
+    make PREFIX=$out install
+
+weakbox:
+  url: https://github.com/friedelschoen/weakbox/archive/dd54254ac64c483e345552155334a45d2004632a.tar.gz
+  checksum: 7e35a05ee5fd1927efadc2f907356ee1ca8002ed
+
+  install: |
+    make PREFIX=$out install
