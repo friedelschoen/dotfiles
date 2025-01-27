@@ -19,7 +19,7 @@ def symlink_files(source_dir, target_dir):
         with open(links_file, "r") as f:
             existing_links = set(line.strip() for line in f if line.strip())
 
-    new_links = []
+    new_links = set()
 
     for root, _, files in os.walk(source_dir):
         for file in files:
@@ -33,6 +33,7 @@ def symlink_files(source_dir, target_dir):
             if dest.exists():
                 if dest.is_symlink() and os.readlink(dest) == str(os.path.relpath(src, dest.parent)):
                     print(f"Skipping existing symlink: {dest}")
+                    new_links.add(str(rel_path))
                     continue
                 else:
                     print(f"Error: {dest} exists and is not a symlink created by this script.")
@@ -40,8 +41,9 @@ def symlink_files(source_dir, target_dir):
 
             print(f"Creating symlink: {dest} -> {os.path.relpath(src, dest.parent)}")
             dest.symlink_to(os.path.relpath(src, dest.parent))
-            new_links.append(str(rel_path))
+            new_links.add(str(rel_path))
 
+    new_links |= existing_links
     # Append new links to the .home-links file
     with open(links_file, "a") as f:
         for link in new_links:
