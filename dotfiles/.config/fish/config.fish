@@ -23,7 +23,7 @@ function fish_prompt
         set_color -o brred
         echo -n "[exit with $old_status] "
     end
-	
+
 	set_color normal
 	echo -n '| '
 
@@ -40,11 +40,17 @@ function fish_prompt
 end
 
 function fish_greeting
-	echo "fresh in house " (set_color -o red) (bullshit) (set_color normal) "!"
 end
+
+# Environment
+
+set -gx MANPATH "$MANPATH:$HOME/.local/share/man"
+set -gx PLAN9 "$HOME/plan9"
 
 fish_add_path "$HOME/.local/bin"
 fish_add_path "$HOME/go/bin"
+fish_add_path "$HOME/opt/segger-jlink"
+fish_add_path "$PLAN9/bin"
 
 alias ls="exa"
 alias xo="xdg-open"
@@ -53,3 +59,4 @@ alias neofetch="fastfetch"
 alias ccat="chroma -s github"
 alias code-oss="code-oss --no-sandbox"
 alias vsv-user="vsv -d ~/.xservice"
+alias JLink="JLinkExe"
