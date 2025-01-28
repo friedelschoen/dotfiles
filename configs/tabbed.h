@@ -15,12 +15,13 @@ static const char col_borderbar[] = "#1e2122";
 
 /* appearance */
 static const char font[] = "Fira Code:size=10";
-static const char *colors[][3] = {
-    // dark
+static const char *colors[][3] = { // one dark
     /*               fg         bg         border   */
-    [SchemeNorm] = {white, "#3b484d", "#3b484d"},
-    [SchemeSel] = {black, "#bd3d3f", "#bd3d3f"},
-    [SchemeUrg] = {orange, gray3, orange},
+    [SchemeNorm] = {"#abb2bf", "#171b23", "#171b23"},
+    [SchemeSel] = {"#61afef", "#282c34",  "#61afef"},
+    [SchemeUrg] = {"#d19a66", "#282c34", "#be5046"},
+    [3] = {"#282c34", "#d19a66", "#171b23"},
+    [4] = {"#282c34", "#98c379", "#171b23"},
 };
 
 static const char before[] = "<";

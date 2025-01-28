@@ -104,49 +104,6 @@ enum {
   GRUVBOX_LIGHT,
 };
 
-static const char **const themes[] = {
-    [CLASSIC] =
-        (const char *[]){
-            /* 8 normal colors */
-            "black", "red3", "green3", "yellow3", "blue2", "magenta3", "cyan3",
-            "gray90",
-
-            /* 8 bright colors */
-            "gray50", "red", "green", "yellow", "#5c5cff", "magenta", "cyan",
-            "white",
-
-            [255] = 0,
-
-            /* more colors can be added after 255 to use with DefaultXX */
-            "gray90", /* default foreground colour */
-            "black",  /* default background colour */
-        },
-    [GRUVBOX_DARK] =
-        (const char *[]){
-            /* bright colors */
-            "#708089", "#f85552", "#8da101", "#dfa000", "#3a94c5", "#df69ba",
-            "#35a77c", "#939f91",
-
-            /* dark colors */
-            "#829181", "#e66868", "#93b259", "#dfa000", "#3a94c5", "#df69ba",
-            "#35a77c", "#a6b0a0",
-
-            [FOREGROUND] = "#5c6a72", // foreground
-            [BACKGROUND] = "#fdf6e3", // background
-        },
-    [GRUVBOX_LIGHT] =
-        (const char *[]){// normal colors
-                         "#665c54", "#cc241d", "#98971a", "#d79921", "#458588",
-                         "#b16286", "#689d6a", "#a89984",
-                         // dark colors
-                         "#7c6f64", "#fb4934", "#b8bb26", "#fabd2f", "#83a598",
-                         "#d3869b", "#8ec07c", "#bdae93",
-
-                         [255] = 0, "#ebdbb2", "#282828"
-
-        }};
-
-
 /* Terminal colors (16 first used in escape sequence) one dark! */
 static const char *colorname[] = {
     /* Normal colors */
