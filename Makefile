@@ -9,11 +9,13 @@ uninstall:
 clean:
 	rm -rf build
 
-build/apps build/sources: apps.yml
-	scripts/makeapps.py $^
+.PHONY: build/apps build/sources
+build/apps build/sources:
+	scripts/makeapps.py apps.yml
 
-build/services: services.yml
-	scripts/makeservices.py $^
+.PHONY: build/services
+build/services:
+	scripts/makeservices.py services.yml
 
 build/home: build/apps build/services dotfiles
 	rm -rf build/home/

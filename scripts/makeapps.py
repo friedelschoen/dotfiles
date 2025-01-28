@@ -52,8 +52,17 @@ def download(name, url):
     exit(1)
 
 
-def optionhash(options):
-    return hashlib.sha1(json.dumps(options, sort_keys=True).encode()).hexdigest()
+def optionhash(name, options):
+    sha = hashlib.sha1()
+    sha.update(name.encode())
+    sha.update(json.dumps(options, sort_keys=True).encode())
+    if 'config' in options:
+        with open(CONFIG_DIR / options['config'], 'rb') as config:
+            hashlib.file_digest(config, lambda: sha)
+    for patchpath in options.get('patches', []):
+        with open(PATCH_DIR / patchpath, 'rb') as patch:
+            hashlib.file_digest(patch, lambda: sha)
+    return sha.hexdigest()
 
 
 def unpack(archive, name):
@@ -89,7 +98,7 @@ def validate_checksum(dest, expected_checksum):
 
 def process_program(name, options, existing, db):
     check_options(name, options, "url", "checksum", "install")
-    opthash = optionhash(options)
+    opthash = optionhash(name, options)
 
     if name in existing and existing[name] == opthash:
         print(f"Skipping `{name}`, already exists")
