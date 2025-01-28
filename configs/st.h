@@ -146,7 +146,35 @@ static const char **const themes[] = {
 
         }};
 
-static const char *colorname[] = /* GRUVBOX_LIGHT */ {
+
+/* Terminal colors (16 first used in escape sequence) one dark! */
+static const char *colorname[] = {
+    /* Normal colors */
+	[0]   = "#171b23",
+	[1]   = "#be5046",
+	[2]   = "#98c379",
+	[3]   = "#d19a66",
+	[4]   = "#61afef",
+	[5]   = "#c678dd",
+	[6]   = "#56b6c2",
+	[7]   = "#828997",
+
+    /* Bright colors */
+	[8]   = "#5c6370",
+	[9]   = "#e06c75",
+	[10]  = "#98c379",
+	[11]  = "#e5c07b",
+	[12]  = "#61afef",
+	[13]  = "#c678dd",
+	[14]  = "#56b6c2",
+	[15]  = "#abb2bf",
+
+    /* Foreground and background */
+	[256] = "#abb2bf",
+	[257] = "#282c34",
+};
+
+static const char *colorname____[] = /* GRUVBOX_LIGHT */ {
     // normal colors
     "#708089", "#f85552", "#8da101", "#dfa000", "#3a94c5", "#df69ba", "#35a77c",
     "#939f91",
