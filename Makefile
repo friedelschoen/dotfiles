@@ -1,3 +1,5 @@
+all: build/home
+
 install: build/home
 	scripts/symlink.py $$HOME build/home
 
