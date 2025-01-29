@@ -5,6 +5,20 @@ import sys
 import shutil
 from pathlib import Path
 
+YES_ANSWER = ["y", "yes"]
+NO_ANSWER = ["n", "no"]
+
+def rm_exist(dest, rel_path):
+    print(f"Error: {rel_path} exists and is not a symlink created by this script.")
+    answer = ""
+    while answer.lower() not in YES_ANSWER + NO_ANSWER:
+        answer = input("remove [y/n]:")
+
+    if answer.lower() in NO_ANSWER:
+        sys.exit(0)
+
+    os.remove(str(dest))
+
 def symlink_files(source_dir, target_dir):
     target_dir = Path(target_dir).resolve()
     links_file = target_dir / ".home-links"
@@ -37,8 +51,7 @@ def symlink_files(source_dir, target_dir):
                         new_links.add(str(rel_path))
                         continue
                     else:
-                        print(f"Error: {rel_path} exists and is not a symlink created by this script.")
-                        sys.exit(1)
+                        rm_exist(dest, rel_path)
 
                 print(f"LINK {rel_path!s}")
                 dest.symlink_to(os.path.relpath(src, dest.parent))
