@@ -11,7 +11,6 @@ dmenu:
     - dmenu-numbers-20220512-28fb3e2.diff
 
   install: |
-    make all
     make PREFIX=$out install
 
 dwm:
@@ -25,7 +24,6 @@ dwm:
     - dwm-6.2-urg-border.diff
 
   install: |
-    make all
     make PREFIX=$out install
 
 # gitin:
@@ -33,7 +31,6 @@ dwm:
 #   checksum: 9eaba901de8af8df97176912efa3626141167189
 
 #   install: |
-#     make all
 #     make PREFIX=$out install
 
 pretty-svstat:
@@ -41,7 +38,6 @@ pretty-svstat:
   checksum: f5e3cac864830d73ec52e6261027df12e9247805
 
   install: |
-    make all
     make PREFIX=$out install
 
 slstatus:
@@ -54,7 +50,6 @@ slstatus:
     - slstatus-notify.diff
 
   install: |
-    make all
     make PREFIX=$out install
 
 st:
@@ -68,7 +63,6 @@ st:
     - st-anysize-20220718-baa9357.diff
 
   install: |
-    make all
     make PREFIX=$out install
 
 stw:
@@ -78,24 +72,22 @@ stw:
   config: stw.h
 
   install: |
-    make all
     make PREFIX=$out install
 
-# surf:
-#   url: https://dl.suckless.org/surf/surf-2.1.tar.gz
-#   checksum: ea5f398f305fcef331d9ab58345038f9239ccaa5
+surf:
+  url: https://dl.suckless.org/surf/surf-2.1.tar.gz
+  checksum: ea5f398f305fcef331d9ab58345038f9239ccaa5
 
-#   config: surf.h
-#   patches:
-#     - surf-2.0-homepage.diff
-#     - surf-2.1-history.diff
-#     - surf-clipboard-20200112-a6a8878.diff
-#     - surf-searchengines-20220804-609ea1c.diff
-#     - surf-short-title-20210206-7dcce9e.diff
+  config: surf.h
+  patches:
+    - surf-2.0-homepage.diff
+    - surf-2.1-history.diff
+    - surf-clipboard-20200112-a6a8878.diff
+    - surf-searchengines-20220804-609ea1c.diff
+    - surf-short-title-20210206-7dcce9e.diff
 
-#   install: |
-#     make all
-#     make PREFIX=$out install
+  install: |
+    make PREFIX=$out install
 
 tabbed:
   url: https://dl.suckless.org/tools/tabbed-0.8.tar.gz
@@ -106,20 +98,18 @@ tabbed:
     - tabbed-colorscheme.diff
 
   install: |
-    make all
     make PREFIX=$out install
 
-textselect:
-  url: https://github.com/friedelschoen/textselect/archive/a3deb1b53a2cc67b0c53bb3391f32e166546782c.tar.gz
-  checksum: 592776a38cc479eb6484dbd37eb8dd88c3ddbc27
+# textselect:
+#   url: https://github.com/friedelschoen/textselect/archive/a3deb1b53a2cc67b0c53bb3391f32e166546782c.tar.gz
+#   checksum: 592776a38cc479eb6484dbd37eb8dd88c3ddbc27
 
-  install: |
-    make all
-    make PREFIX=$out install
+#   install: |
+#     make PREFIX=$out install
 
-weakbox:
-  url: https://github.com/friedelschoen/weakbox/archive/dd54254ac64c483e345552155334a45d2004632a.tar.gz
-  checksum: 7e35a05ee5fd1927efadc2f907356ee1ca8002ed
+# weakbox:
+#   url: https://github.com/friedelschoen/weakbox/archive/dd54254ac64c483e345552155334a45d2004632a.tar.gz
+#   checksum: 7e35a05ee5fd1927efadc2f907356ee1ca8002ed
 
-  install: |
-    make PREFIX=$out install
+#   install: |
+#     make PREFIX=$out install

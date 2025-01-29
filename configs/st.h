@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char font[] = "Monaco:size=9";
+static char font[] = "Source Code Pro:size=9.5";
 static int borderpx = 5;
 
 /*
@@ -27,7 +27,7 @@ char *vtiden = "\033[?6c";
 
 /* Kerning / character bounding-box multipliers */
 static float cwscale = 1.0;
-static float chscale = 1.0;
+static float chscale = 0.9;
 
 /*
  * word delimiter string
@@ -98,99 +98,32 @@ enum {
   BACKGROUND = 257,
 };
 
-enum {
-  CLASSIC,
-  GRUVBOX_DARK,
-  GRUVBOX_LIGHT,
-};
-
 /* Terminal colors (16 first used in escape sequence) one dark! */
 static const char *colorname[] = {
     /* Normal colors */
-	[0]   = "#171b23",
-	[1]   = "#be5046",
-	[2]   = "#98c379",
-	[3]   = "#d19a66",
-	[4]   = "#61afef",
-	[5]   = "#c678dd",
-	[6]   = "#56b6c2",
-	[7]   = "#828997",
+    [0] = "#171b23",
+    [1] = "#be5046",
+    [2] = "#98c379",
+    [3] = "#d19a66",
+    [4] = "#61afef",
+    [5] = "#c678dd",
+    [6] = "#56b6c2",
+    [7] = "#828997",
 
     /* Bright colors */
-	[8]   = "#5c6370",
-	[9]   = "#e06c75",
-	[10]  = "#98c379",
-	[11]  = "#e5c07b",
-	[12]  = "#61afef",
-	[13]  = "#c678dd",
-	[14]  = "#56b6c2",
-	[15]  = "#abb2bf",
+    [8] = "#5c6370",
+    [9] = "#e06c75",
+    [10] = "#98c379",
+    [11] = "#e5c07b",
+    [12] = "#61afef",
+    [13] = "#c678dd",
+    [14] = "#56b6c2",
+    [15] = "#abb2bf",
 
     /* Foreground and background */
-	[256] = "#abb2bf",
-	[257] = "#282c34",
+    [256] = "#abb2bf",
+    [257] = "#282c34",
 };
-
-static const char *colorname____[] = /* GRUVBOX_LIGHT */ {
-    // normal colors
-    "#708089", "#f85552", "#8da101", "#dfa000", "#3a94c5", "#df69ba", "#35a77c",
-    "#939f91",
-
-    /* dark colors */
-    "#829181", "#e66868", "#93b259", "#dfa000", "#3a94c5", "#df69ba", "#35a77c",
-    "#a6b0a0",
-
-    [FOREGROUND] = "#282828", // "#5c6a72", // foreground
-    [BACKGROUND] = "#ffffea", // "#fdf6e3", // background
-
-};
-
-static const char *colornam__e[] = { // real gruvbox dark
-    "#665c54",
-    "#cc241d",
-    "#98971a",
-    "#d79921",
-    "#458588",
-    "#b16286",
-    "#689d6a",
-    "#a89984",
-    "#7c6f64",
-    "#fb4934",
-    "#b8bb26",
-    "#fabd2f",
-    "#83a598",
-    "#d3869b",
-    "#8ec07c",
-    "#bdae93",
-	// [FOREGROUND] = "#FFFFea",
-	[FOREGROUND] = "#ebdbb2",
-    [BACKGROUND] = "#282828"
-};
-
-static const char *colorname___[] = {
-    "#3e3e3e", "#970b16", "#07962a", "#f7edc7", "#003e8a", "#e94691", "#89d1ec",
-    "#ffffff", "#666666", "#de0000", "#87d5a2", "#f0cf06", "#2e6cba", "#ffa29f",
-    "#1cfafe", "#ffffff", [255] = 0, "#f4f4f4", "#3e3e3e"};
-
-// github light
-static const char *colorname_[] = {"#222222",
-                                   "#B10000",
-                                   "#6CB100",
-                                   "#B15C00",
-                                   "#005577",
-                                   "#5600B1",
-                                   "#007177",
-                                   "#bbbbbb",
-                                   "#444444",
-                                   "#CC0000",
-                                   "#7CCC00",
-                                   "#CC6A00",
-                                   "#0075A3",
-                                   "#6300CC",
-                                   "#009199",
-                                   "#eeeeee",
-                                   [BACKGROUND] = "#eeeeee",
-                                   [FOREGROUND] = "#222222"};
 
 /*
  * Default colors (colorname index)

@@ -102,26 +102,23 @@ def process_program(name, options, existing, db):
 
     if name in existing and existing[name] == opthash:
         print(f"Skipping `{name}`, already exists")
-        db.write(f"{name} {opthash}\n")
-        return
+    else:
+        os.makedirs(BUILD_DIR / "archives", exist_ok=True)
 
-    os.makedirs(BUILD_DIR / "archives", exist_ok=True)
+        archive_path = download(name, options['url'])
+        validate_checksum(archive_path, options['checksum'])
+        unpack(archive_path, name)
 
-    archive_path = download(name, options['url'])
-    validate_checksum(archive_path, options['checksum'])
-    unpack(archive_path, name)
+        if 'config' in options:
+            shutil.copy(CONFIG_DIR / options['config'], BUILD_DIR / name / 'config.h')
 
-    if 'config' in options:
-        shutil.copy(CONFIG_DIR / options['config'], BUILD_DIR / name / 'config.h')
-
-    for patch_file in options.get('patches', []):
-        patch(name, patch_file)
+        for patch_file in options.get('patches', []):
+            patch(name, patch_file)
 
     db.write(f"{name} {opthash}\n")
     db.flush()
 
     subprocess.run(options['install'], shell=True, check=True, cwd=BUILD_DIR / name)
-
 
 def main():
     if len(sys.argv) < 2:

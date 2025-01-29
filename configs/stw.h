@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 static int borderpx = 0;
-static char font[] = "Man:size=10";
+static char font[] = "Monaco:size=9";
 
 /* background opacity */
 static double alpha = 1.0;
@@ -16,7 +16,7 @@ struct g ty = {0};
 static char align = 'l';
 
 /* foreground and background colors */
-static char *colors[2] = { "#000000", "#dddddd" };
+static char *colors[2] = {"#abb2bf", "#282c34"};
 
 /* time in seconds between subcommand runs.
 0 will completely disable subcommand restarts and -1 will make them instant.

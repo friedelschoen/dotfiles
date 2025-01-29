@@ -4,7 +4,7 @@
 setxkbmap -layout us -variant intl
 
 # set background
-xsetroot -solid '#4d4d4d'
+xsetroot -solid '#282c34'
 
 # set security
 xhost +si:localuser:$USER

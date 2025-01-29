@@ -86,19 +86,7 @@ stw-service:
   run: >
     #!/bin/sh
 
-
-    exec stw -b '#4d4d4d' -f '#eeeeee' -F 'Monaco:size=9' -p 1 -B 10 -y 20 sh -c
-    'echo -- services -- ; psv /var/service/* ~/.xservice/* 2> /dev/null | sort
-    -k2,2 -k1,1'
-
-stw-xbps:
-  enable: true
-  run: >
-    #!/bin/sh
-
-
-    exec stw -b '#4d4d4d' -f '#eeeeee' -F 'Monaco:size=9' -B 10 -p 120 -y 100%
-    -Y -100% sh -c 'echo -- updates -- && xbps-install -Mun | cut -d" " -f1'
+    exec stw -p 1 -B 10 -y 20 psvstat ~/.xservice/*
 
 tiramisu:
   enable: true
