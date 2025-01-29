@@ -123,8 +123,8 @@ static const Key keys[] = {
     /* modifier                     key        function        argument */
     {MODKEY, XK_Return, spawn, COMMAND("st")},
     {MODKEY | ShiftMask, XK_w, spawn, COMMAND("surf")},
-    {MODKEY, XK_w, spawn, COMMAND("firefox")},
-    {MODKEY, XK_space, spawn, COMMAND("dmenu_run")},
+	{MODKEY, XK_w, spawn, COMMAND("firefox")},
+	{MODKEY, XK_space,spawn, COMMAND("dmenu_run", "-c", "-bh", "5", "-l", "20", "-g", "2") },
     {MODKEY, XK_m, spawn,
      SHELL("man -k . | dmenu -l 25 | cut -d' ' -f1-2 | sed -E 's/(\\S+) "
            "\\((\\S+)\\)/\\2 \\1/' | xargs st -f 'SF Mono' -e man -s")},
