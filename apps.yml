@@ -9,8 +9,12 @@ dmenu:
     - dmenu-caseinsensitive-5.0.diff
     - dmenu-highlight-4.9.diff
     - dmenu-numbers-20220512-28fb3e2.diff
+    - dmenu-center-5.2.diff
+    - dmenu-grid-4.9.diff
 
   install: |
+    echo cp ${root}/assets/dmenu_path dmenu_path
+    cp ${root}/assets/dmenu_path dmenu_path
     make PREFIX=$out install
 
 dwm:

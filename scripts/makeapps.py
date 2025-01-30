@@ -84,7 +84,7 @@ def unpack(archive, name):
 def patch(name, diff):
     directory = BUILD_DIR / name
     rel = os.path.relpath(PATCH_DIR / diff, directory)
-    print(f"patching {diff}")
+    print(f"\n[*] applying {diff} on {name}")
     subprocess.run(['patch', '-p1', '-i', rel], check=True, cwd=directory)
 
 
@@ -138,6 +138,7 @@ def main():
     if not force:
         existing = read_existing()
 
+    os.environ["root"] = os.getcwd()
     os.environ["out"] = os.getcwd() + "/" + OUTDIR
     with open(BUILD_DIR / HASHES_FILE, "w") as db:
         for name, options in apps.items():

@@ -22,10 +22,11 @@ static const char *prompt =
 static const char *dynamic =
     NULL; /* -dy option; dynamic command to run on input change */
 static const char *fonts[] = {"Monaco:size=9"};
-static const char *colors[][3] = { // one dark
+static const char *colors[][3] = {
+    // one dark
     /*               fg         bg         border   */
     [SchemeNorm] = {"#abb2bf", "#171b23", "#171b23"},
-    [SchemeSel] = {"#61afef", "#282c34",  "#61afef"},
+    [SchemeSel] = {"#61afef", "#282c34", "#61afef"},
     [SchemeOut] = {"#d19a66", "#282c34", "#be5046"},
     [3] = {"#282c34", "#d19a66", "#171b23"},
     [4] = {"#282c34", "#98c379", "#171b23"},

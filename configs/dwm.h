@@ -52,15 +52,17 @@ static const char *fonts[] = {"Monaco:size=9"};
 //         {"#eaffea", "#999999",
 //          "#ff0000"}, // fg = orange (light green), bg = gray3, border = red
 //     [3] = {"#999999", "#eaffea",
-//            "#cccccc"}, // fg = gray3, bg = orange (light green), border = gray2
+//            "#cccccc"}, // fg = gray3, bg = orange (light green), border =
+//            gray2
 //     [4] = {"#999999", "#448844",
 //            "#cccccc"} // fg = gray3, bg = green, border = gray2
 // };
 
-static const char *colors[][3] = { // one dark
+static const char *colors[][3] = {
+    // one dark
     /*               fg         bg         border   */
     [SchemeNorm] = {"#abb2bf", "#171b23", "#171b23"},
-    [SchemeSel] = {"#61afef", "#282c34",  "#61afef"},
+    [SchemeSel] = {"#61afef", "#282c34", "#61afef"},
     [SchemeUrg] = {"#d19a66", "#282c34", "#be5046"},
     [3] = {"#282c34", "#d19a66", "#171b23"},
     [4] = {"#282c34", "#98c379", "#171b23"},
@@ -123,8 +125,9 @@ static const Key keys[] = {
     /* modifier                     key        function        argument */
     {MODKEY, XK_Return, spawn, COMMAND("st")},
     {MODKEY | ShiftMask, XK_w, spawn, COMMAND("surf")},
-	{MODKEY, XK_w, spawn, COMMAND("firefox")},
-	{MODKEY, XK_space,spawn, COMMAND("dmenu_run", "-c", "-bh", "5", "-l", "20", "-g", "2") },
+    {MODKEY, XK_w, spawn, COMMAND("firefox")},
+    {MODKEY, XK_space, spawn,
+     COMMAND("dmenu_run", "-c", "-l", "20", "-g", "2")},
     {MODKEY, XK_m, spawn,
      SHELL("man -k . | dmenu -l 25 | cut -d' ' -f1-2 | sed -E 's/(\\S+) "
            "\\((\\S+)\\)/\\2 \\1/' | xargs st -f 'SF Mono' -e man -s")},
