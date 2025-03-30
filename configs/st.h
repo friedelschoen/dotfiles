@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char font[] = "Monaco:size=9";
+static char font[] = "Go Mono:style=Regular,size=9";
 static int borderpx = 5;
 
 /*
@@ -323,7 +323,7 @@ static Key key[] = {
     {XK_Down, ShiftMask | ControlMask | Mod1Mask, "\033[1;8B", 0, 0},
     {XK_Down, XK_ANY_MOD, "\033[B", 0, -1},
     {XK_Down, XK_ANY_MOD, "\033OB", 0, +1},
-    {XK_Left, ShiftMask, "\033[1;2D", 0, 0},
+    {XK_Left, ShiftMask, "\033[1;2D", 0, 0}, // (224;75)
     {XK_Left, Mod1Mask, "\033[1;3D", 0, 0},
     {XK_Left, ShiftMask | Mod1Mask, "\033[1;4D", 0, 0},
     {XK_Left, ControlMask, "\033[1;5D", 0, 0},

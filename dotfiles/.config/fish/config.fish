@@ -42,6 +42,7 @@ end
 
 set -x MANPATH "$MANPATH:$HOME/.local/share/man"
 set -x PLAN9 "$HOME/plan9"
+set -x EDITOR "micro"
 
 set -xp PATH $HOME/.local/bin
 set -xp PATH $HOME/go/bin
@@ -56,7 +57,8 @@ alias ccat="chroma -s github"
 alias code-oss="code-oss --no-sandbox"
 alias vsv-user="vsv -d ~/.xservice"
 alias JLink="JLinkExe"
-
+alias acme="acme -f $PLAN9/font/monaco/monaco.12.font"
+alias deadcode='deadcode -f="{{println .Path}}{{range .Funcs}}{{printf \"\t%s\t%s\n\" .Name .Position}}{{end}}{{println}}"'
 
 if [ -z "$DISPLAY" -a (tty) = /dev/tty1 ]
     exec startx

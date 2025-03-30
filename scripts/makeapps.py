@@ -97,17 +97,31 @@ def validate_checksum(dest, expected_checksum):
 
 
 def process_program(name, options, existing, db):
-    check_options(name, options, "url", "checksum", "install")
+    if "url" not in options and "path" not in options:
+        sys.stderr.write(f"Missing 'url' or 'path' in `{name}`\n")
+        exit(1)
+
+    if "path" in options:
+        check_options(name, options, "install")
+    else:
+        check_options(name, options, "url", "checksum", "install")
+
     opthash = optionhash(name, options)
 
     if name in existing and existing[name] == opthash:
         print(f"Skipping `{name}`, already exists")
     else:
-        os.makedirs(BUILD_DIR / "archives", exist_ok=True)
-
-        archive_path = download(name, options['url'])
-        validate_checksum(archive_path, options['checksum'])
-        unpack(archive_path, name)
+        if 'path' in options:
+            local_path = Path(options['path']).resolve()
+            dest_path = BUILD_DIR / name
+            print(f"Copying local directory `{local_path}` to `{dest_path}`")
+            dest_path.unlink(True)
+            dest_path.symlink_to(local_path)
+        else:
+            os.makedirs(BUILD_DIR / "archives", exist_ok=True)
+            archive_path = download(name, options['url'])
+            validate_checksum(archive_path, options['checksum'])
+            unpack(archive_path, name)
 
         if 'config' in options:
             shutil.copy(CONFIG_DIR / options['config'], BUILD_DIR / name / 'config.h')

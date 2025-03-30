@@ -30,12 +30,12 @@ dwm:
   install: |
     make PREFIX=$out install
 
-# gitin:
-#   url: https://github.com/friedelschoen/gitin/archive/9585e3f2389700f21154c0f14507ed8b91cd3b14.tar.gz
-#   checksum: 9eaba901de8af8df97176912efa3626141167189
+gitin:
+  url: https://github.com/friedelschoen/gitin/archive/bd376b631b7e10ab6f99cfb8f9e6fcc3c5efdc31.tar.gz
+  checksum: adb0b13d9631e84010114fa3ef9d4c51f9613afb
 
-#   install: |
-#     make PREFIX=$out install
+  install: |
+    make PREFIX=$out install
 
 pretty-svstat:
   url: https://github.com/friedelschoen/pretty-sv/archive/ec27736c57aebe3055ebc95a34aa55a356552ff2.tar.gz
@@ -104,16 +104,21 @@ tabbed:
   install: |
     make PREFIX=$out install
 
-# textselect:
-#   url: https://github.com/friedelschoen/textselect/archive/a3deb1b53a2cc67b0c53bb3391f32e166546782c.tar.gz
-#   checksum: 592776a38cc479eb6484dbd37eb8dd88c3ddbc27
+textselect:
+  url: https://github.com/friedelschoen/textselect/archive/a3deb1b53a2cc67b0c53bb3391f32e166546782c.tar.gz
+  checksum: 592776a38cc479eb6484dbd37eb8dd88c3ddbc27
 
-#   install: |
-#     make PREFIX=$out install
+  install: |
+    make PREFIX=$out install
 
-# weakbox:
-#   url: https://github.com/friedelschoen/weakbox/archive/dd54254ac64c483e345552155334a45d2004632a.tar.gz
-#   checksum: 7e35a05ee5fd1927efadc2f907356ee1ca8002ed
+weakbox:
+  url: https://github.com/friedelschoen/weakbox/archive/dd54254ac64c483e345552155334a45d2004632a.tar.gz
+  checksum: 7e35a05ee5fd1927efadc2f907356ee1ca8002ed
 
-#   install: |
-#     make PREFIX=$out install
+  install: |
+    make PREFIX=$out install
+
+services:
+  path: .
+  install: |
+    echo hello > $out/hello
