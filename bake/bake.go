@@ -46,13 +46,14 @@ type Parser struct {
 }
 
 type Object struct {
+	parent   *Object
 	defines  map[string]any
 	includes []string
 	extends  []string
 	values   map[string]any
 }
 
-func (p *Parser) parseValue() (any, error) {
+func (p *Parser) parseValue(parent *Object) (any, error) {
 	token, err := p.dec.Token()
 	if err != nil {
 		return nil, err
@@ -62,9 +63,9 @@ func (p *Parser) parseValue() (any, error) {
 	case json.Delim:
 		switch tok {
 		case '{':
-			return p.parseMap()
+			return p.parseMap(parent)
 		case '[':
-			return p.parseArray()
+			return p.parseArray(parent)
 		}
 	case string:
 		if strings.HasPrefix(tok, "./") {
@@ -77,8 +78,9 @@ func (p *Parser) parseValue() (any, error) {
 	return nil, fmt.Errorf("unexpected token: %v", token)
 }
 
-func (p *Parser) parseMap() (*Object, error) {
+func (p *Parser) parseMap(parent *Object) (*Object, error) {
 	result := &Object{
+		parent:  parent,
 		defines: make(map[string]any),
 		values:  make(map[string]any),
 	}
@@ -92,7 +94,7 @@ func (p *Parser) parseMap() (*Object, error) {
 		if !ok {
 			return nil, fmt.Errorf("expected string key, got %T", key)
 		}
-		value, err := p.parseValue()
+		value, err := p.parseValue(result)
 		if err != nil {
 			return nil, err
 		}
@@ -123,10 +125,10 @@ func (p *Parser) parseMap() (*Object, error) {
 	return result, err
 }
 
-func (p *Parser) parseArray() ([]any, error) {
+func (p *Parser) parseArray(parent *Object) ([]any, error) {
 	var result []any
 	for p.dec.More() {
-		value, err := p.parseValue()
+		value, err := p.parseValue(parent)
 		if err != nil {
 			return nil, err
 		}
@@ -136,7 +138,7 @@ func (p *Parser) parseArray() ([]any, error) {
 	return result, err
 }
 
-func parseFile(filename string) (any, error) {
+func parseFile(filename string, parent *Object) (any, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open file %s: %w", filename, err)
@@ -144,7 +146,7 @@ func parseFile(filename string) (any, error) {
 	defer file.Close()
 	cwd, _ := filepath.Abs(path.Dir(filename))
 	parser := Parser{dec: json.NewDecoder(file), cwd: cwd}
-	return parser.parseValue()
+	return parser.parseValue(parent)
 }
 
 func interpolate(str string, scope map[string]any) (any, error) {
@@ -196,7 +198,7 @@ func resolve(ast any, scope map[string]any) (any, error) {
 				inclpath := ast.includes[0]
 				ast.includes = ast.includes[1:]
 				var err error
-				otherast, err = parseFile(inclpath)
+				otherast, err = parseFile(inclpath, ast)
 				if err != nil {
 					return nil, err
 				}
@@ -228,7 +230,7 @@ func resolve(ast any, scope map[string]any) (any, error) {
 			}
 		}
 		if _, ok := ast.values["@output"]; ok {
-			return output(ast.values)
+			return output(ast)
 		}
 		if unwrap, ok := ast.values["@"]; ok {
 			return unwrap, nil
@@ -247,27 +249,45 @@ func resolve(ast any, scope map[string]any) (any, error) {
 	return ast, nil
 }
 
-func output(result map[string]any) (string, error) {
+func output(result *Object) (string, error) {
 	hashlib := crc64.New(crc64.MakeTable(crc64.ECMA))
 	enc := json.NewEncoder(hashlib)
-	hashValue(hashlib, enc, result)
+	hashValue(hashlib, enc, result.values)
 	hashstr := hex.EncodeToString(hashlib.Sum(nil))
+
+	names := make([]string, 0)
+	for node := result; node != nil; node = node.parent {
+		if nameAny, ok := node.values["@name"]; ok {
+			if name, ok := nameAny.(string); ok {
+				names = append(names, name)
+			}
+		}
+	}
+
+	fmt.Printf("building %s", hashstr)
+	if len(names) > 0 {
+		slices.Reverse(names)
+		fmt.Printf(" (%s)", strings.Join(names, " -> "))
+	}
+	fmt.Print(" ... ")
 
 	cwd, _ := os.Getwd()
 	outdir := path.Join(cwd, "store", hashstr)
 	if _, err := os.Stat(outdir); err == nil {
+		fmt.Println("cached")
 		return outdir, nil
 	}
 	os.RemoveAll(outdir)
 	success := false
 	defer func() {
 		if !success {
+			fmt.Println("failed")
 			os.RemoveAll(outdir)
 		}
 	}()
 
 	install := ""
-	switch outputValue := result["@output"].(type) {
+	switch outputValue := result.values["@output"].(type) {
 	case string:
 		install = outputValue
 	case []any:
@@ -288,7 +308,7 @@ func output(result map[string]any) (string, error) {
 	}
 
 	interpreter := "sh"
-	if interpreterAny, ok := result["@interpreter"]; ok {
+	if interpreterAny, ok := result.values["@interpreter"]; ok {
 		if str, ok := interpreterAny.(string); ok {
 			interpreter = str
 		} else {
@@ -301,7 +321,7 @@ func output(result map[string]any) (string, error) {
 		return "", err
 	}
 	environ := append(os.Environ(), "out="+outdir)
-	for key, value := range result {
+	for key, value := range result.values {
 		if key != "" && key[0] == '$' {
 			enc, err := encodeEnviron(value, true)
 			if err != nil {
@@ -319,14 +339,6 @@ func output(result map[string]any) (string, error) {
 	logbuf := &RingBuffer{Content: make([]byte, 128)}
 	stdout := io.MultiWriter(logfile, logbuf)
 
-	if nameAny, ok := result["@name"]; ok {
-		if name, ok := nameAny.(string); ok {
-			fmt.Printf("building %s (%s)\n", hashstr, name)
-		}
-	} else {
-		fmt.Printf("building %s\n", hashstr)
-	}
-
 	cmd := exec.Command(interpreter, "-e", "-c", install)
 	cmd.Env = environ
 	cmd.Dir = builddir
@@ -338,18 +350,19 @@ func output(result map[string]any) (string, error) {
 		return "", err
 	}
 
+	fmt.Println("done")
 	success = true
 	return outdir, nil
 }
 
 func hashValue(hashlib hash.Hash, encoder *json.Encoder, value any) {
 	switch value := value.(type) {
-	case map[string]any:
-		keys := slices.Collect(maps.Keys(value))
+	case *Object:
+		keys := slices.Collect(maps.Keys(value.values))
 		slices.Sort(keys)
 		for _, k := range keys {
 			hashlib.Write([]byte(k))
-			hashValue(hashlib, encoder, value[k])
+			hashValue(hashlib, encoder, value.values[k])
 		}
 	default:
 		encoder.Encode(value)
@@ -410,7 +423,7 @@ func encodeEnviron(value any, root bool) (string, error) {
 
 func main() {
 	os.MkdirAll("store", 0755)
-	ast, err := parseFile("../../data.json")
+	ast, err := parseFile("../data.json", nil)
 	if err != nil {
 		panic(err)
 	}
