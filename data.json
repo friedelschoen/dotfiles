@@ -2,6 +2,7 @@
     "$paths": {
         "@define": {
             "patch": {
+                "@name": "patch",
                 "@interpreter": "bash",
                 "@output": [
                     "cp -r $source $out",
@@ -12,6 +13,7 @@
                 ]
             },
             "fetch": {
+                "@name": "fetch",
                 "@interpreter": "bash",
                 "@output": [
                     "curl -L $url -o archive",
@@ -56,6 +58,7 @@
                     ]
                 },
                 "$config": "./configs/dmenu.h",
+                "@name": "dmenu",
                 "@output": [
                     "cd $root",
                     "cp $config dmenu.h",
@@ -77,6 +80,7 @@
                     ]
                 },
                 "$config": "./configs/dwm.h",
+                "@name": "dwm",
                 "@output": [
                     "cd $root",
                     "cp $config config.h",
@@ -89,6 +93,7 @@
                     "$url": "https://github.com/friedelschoen/gitin/archive/bd376b631b7e10ab6f99cfb8f9e6fcc3c5efdc31.tar.gz",
                     "$checksum": "adb0b13d9631e84010114fa3ef9d4c51f9613afb"
                 },
+                "@name": "gitin",
                 "@output": [
                     "cd $source",
                     "make PREFIX=$out install"
@@ -100,6 +105,7 @@
                     "$url": "https://github.com/friedelschoen/pretty-sv/archive/ec27736c57aebe3055ebc95a34aa55a356552ff2.tar.gz",
                     "$checksum": "f5e3cac864830d73ec52e6261027df12e9247805"
                 },
+                "@name": "pretty-sv",
                 "@output": [
                     "cd $source",
                     "make PREFIX=$out install"
@@ -119,6 +125,7 @@
                     ]
                 },
                 "$config": "./configs/slstatus.h",
+                "@name": "slstatus",
                 "@output": [
                     "cd $root",
                     "cp $config config.h",
@@ -140,6 +147,7 @@
                     ]
                 },
                 "$config": "./configs/st.h",
+                "@name": "st",
                 "@output": [
                     "cd $root",
                     "cp $config config.h",
@@ -153,6 +161,7 @@
                     "$checksum": "93717eea6254fac4c372977cacfd637610a929e3"
                 },
                 "$config": "./configs/stw.h",
+                "@name": "stw",
                 "@output": [
                     "cd $source",
                     "cp $config config.h",
@@ -176,6 +185,7 @@
                     ]
                 },
                 "$config": "./configs/surf.h",
+                "@name": "surf",
                 "@output": [
                     "cd $root",
                     "cp $config config.h",
@@ -195,6 +205,7 @@
                     ]
                 },
                 "$config": "./configs/tabbed.h",
+                "@name": "tabbed",
                 "@output": [
                     "cd $root",
                     "cp $config config.h",
@@ -207,6 +218,7 @@
                     "$url": "https://github.com/friedelschoen/textselect/archive/a3deb1b53a2cc67b0c53bb3391f32e166546782c.tar.gz",
                     "$checksum": "592776a38cc479eb6484dbd37eb8dd88c3ddbc27"
                 },
+                "@name": "textselect",
                 "@output": [
                     "cd $source",
                     "mkdir -p $out/bin $out/share/man/man1",
@@ -219,6 +231,7 @@
                     "$url": "https://github.com/friedelschoen/weakbox/archive/dd54254ac64c483e345552155334a45d2004632a.tar.gz",
                     "$checksum": "7e35a05ee5fd1927efadc2f907356ee1ca8002ed"
                 },
+                "@name": "weakbox",
                 "@output": [
                     "cd $source",
                     "mkdir -p $out/bin $out/share/man/man1",
@@ -226,6 +239,7 @@
                 ]
             },
             {
+                "@name": "services",
                 "@output": [
                     "mkdir -p $out",
                     "echo hello > $out/hello"
@@ -233,6 +247,7 @@
             }
         ]
     },
+    "@name": "out",
     "@output": [
         "mkdir -p \"$out\"",
         "",
