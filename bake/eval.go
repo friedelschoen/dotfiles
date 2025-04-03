@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -16,7 +17,18 @@ import (
 	"strings"
 )
 
-func interpolate(str string, scope map[string]any) (any, error) {
+type Edge [2]string
+
+type Evaluator struct {
+	Force    bool
+	DryRun   bool
+	CacheDir string
+	LogDir   string
+
+	Edges []Edge
+}
+
+func (ev *Evaluator) interpolate(str string, scope map[string]any) (any, error) {
 	if str == "" {
 		return str, nil
 	}
@@ -26,7 +38,7 @@ func interpolate(str string, scope map[string]any) (any, error) {
 		if !found {
 			return nil, fmt.Errorf("undefined variable: %s", varName)
 		}
-		return resolve(replacement, scope)
+		return ev.resolve(replacement, scope)
 	}
 	var builder strings.Builder
 	for len(str) > 0 {
@@ -56,7 +68,7 @@ func interpolate(str string, scope map[string]any) (any, error) {
 	return builder.String(), nil
 }
 
-func resolve(ast any, scope map[string]any) (any, error) {
+func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 	switch ast := ast.(type) {
 	case *Object:
 		for len(ast.includes) > 0 || len(ast.extends) > 0 {
@@ -91,13 +103,13 @@ func resolve(ast any, scope map[string]any) (any, error) {
 		maps.Copy(newscope, ast.defines)
 		var err error
 		for k, v := range ast.values {
-			ast.values[k], err = resolve(v, newscope)
+			ast.values[k], err = ev.resolve(v, newscope)
 			if err != nil {
 				return nil, err
 			}
 		}
 		if _, ok := ast.values["@output"]; ok {
-			return output(ast)
+			return ev.output(ast)
 		}
 		if unwrap, ok := ast.values["@"]; ok {
 			return unwrap, nil
@@ -105,18 +117,64 @@ func resolve(ast any, scope map[string]any) (any, error) {
 	case []any:
 		var err error
 		for i, elem := range ast {
-			ast[i], err = resolve(elem, scope)
+			ast[i], err = ev.resolve(elem, scope)
 			if err != nil {
 				return nil, err
 			}
 		}
 	case string:
-		return interpolate(ast, scope)
+		return ev.interpolate(ast, scope)
 	}
 	return ast, nil
 }
 
-func output(result *Object) (string, error) {
+type PrefixWriter struct {
+	Prefix string
+	Writer io.Writer
+
+	buf   bytes.Buffer
+	start bool
+}
+
+func NewPrefixWriter(prefix string, w io.Writer) *PrefixWriter {
+	return &PrefixWriter{
+		Prefix: prefix,
+		Writer: w,
+		start:  true,
+	}
+}
+
+func (pw *PrefixWriter) Write(p []byte) (n int, err error) {
+	total := 0
+	for len(p) > 0 {
+		if pw.start {
+			if _, err := pw.Writer.Write([]byte(pw.Prefix)); err != nil {
+				return total, err
+			}
+			pw.start = false
+		}
+
+		i := bytes.IndexByte(p, '\n')
+		if i == -1 {
+			n, err := pw.Writer.Write(p)
+			total += n
+			return total, err
+		}
+
+		n, err := pw.Writer.Write(p[:i+1])
+		total += n
+		if err != nil {
+			return total, err
+		}
+
+		p = p[i+1:]
+		pw.start = true
+	}
+
+	return total, nil
+}
+
+func (ev *Evaluator) output(result *Object) (string, error) {
 	hashlib := crc64.New(crc64.MakeTable(crc64.ECMA))
 	enc := json.NewEncoder(hashlib)
 	hashValue(hashlib, enc, result.values)
@@ -131,19 +189,16 @@ func output(result *Object) (string, error) {
 		}
 	}
 
-	fmt.Printf("building %s", hashstr)
-	if len(names) > 0 {
-		slices.Reverse(names)
-		fmt.Printf(" (%s)", strings.Join(names, " -> "))
+	if len(names) >= 2 {
+		ev.Edges = append(ev.Edges, [2]string{names[1], names[0]})
 	}
-	fmt.Print(" ... ")
 
 	cwd, _ := os.Getwd()
-	outdir := path.Join(cwd, "store", hashstr)
-	if _, err := os.Stat(outdir); err == nil {
-		fmt.Println("cached")
+	outdir := path.Join(cwd, ev.CacheDir, hashstr)
+	if _, err := os.Stat(outdir); (ev.DryRun || err == nil) && !ev.Force {
 		return outdir, nil
 	}
+
 	os.RemoveAll(outdir)
 	success := false
 	defer func() {
@@ -198,12 +253,11 @@ func output(result *Object) (string, error) {
 		}
 	}
 
-	os.MkdirAll("logs", 0755)
-	logfile, err := os.Create(path.Join("logs", hashstr+".txt"))
+	logfile, err := os.Create(path.Join(ev.LogDir, hashstr+".log"))
 	if err != nil {
 		logfile = os.Stdout
 	}
-	logbuf := &RingBuffer{Content: make([]byte, 128)}
+	logbuf := &RingBuffer{Content: make([]byte, 1024)}
 	stdout := io.MultiWriter(logfile, logbuf)
 
 	cmd := exec.Command(interpreter, "-e", "-c", install)
@@ -213,11 +267,17 @@ func output(result *Object) (string, error) {
 	cmd.Stdout = stdout
 	cmd.Stderr = stdout
 	if err := cmd.Run(); err != nil {
-		fmt.Println(string(logbuf.Get()))
+		fmt.Fprintf(os.Stderr, "building %s failed: %v\n%s\n\n", hashstr, err, string(logbuf.Get()))
 		return "", err
 	}
 
-	fmt.Println("done")
+	fmt.Fprint(os.Stderr, hashstr)
+	if len(names) > 0 {
+		fmt.Fprintf(os.Stderr, " %s\n", strings.Join(names, "->"))
+	} else {
+		fmt.Fprintln(os.Stderr)
+	}
+
 	success = true
 	return outdir, nil
 }
