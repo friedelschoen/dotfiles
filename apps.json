@@ -26,7 +26,7 @@
             "@name": "dmenu",
             "@output": [
                 "@multiline",
-                "cd $root",
+                "ecd $root",
                 "cp $config dmenu.h",
                 "make PREFIX=$out install"
             ]

@@ -15,26 +15,30 @@ import (
 	"time"
 )
 
-func hashValue(hashlib io.Writer, value any) {
-	switch value := value.(type) {
-	case *Object:
-		keys := slices.Collect(maps.Keys(value.values))
+func hashValue(w io.Writer, obj Object) {
+	switch value := obj.value.(type) {
+	case map[string]Object:
+		fmt.Fprint(w, "map")
+		keys := slices.Collect(maps.Keys(value))
 		slices.Sort(keys)
 		for _, k := range keys {
-			hashlib.Write([]byte(k))
-			hashValue(hashlib, value.values[k])
+			w.Write([]byte(k))
+			hashValue(w, value[k])
 		}
-	case []any:
-		for _, elem := range value {
-			hashValue(hashlib, elem)
+	case []Object:
+		fmt.Fprint(w, "list")
+		for i, elem := range value {
+			fmt.Fprint(w, i)
+			hashValue(w, elem)
 		}
 	default: /* string, bool, float64 */
-		fmt.Fprint(hashlib, value)
+		fmt.Fprintf(w, "%T", value)
+		fmt.Fprint(w, value)
 	}
 }
 
-func encodeEnviron(value any, root bool) (string, error) {
-	switch value := value.(type) {
+func encodeEnviron(obj Object, root bool) (string, error) {
+	switch value := obj.value.(type) {
 	case string:
 		return value, nil
 	case float64:
@@ -44,9 +48,9 @@ func encodeEnviron(value any, root bool) (string, error) {
 			return "1", nil
 		}
 		return "0", nil
-	case []any:
+	case []Object:
 		if !root {
-			return "", fmt.Errorf("unable to encode nested %T", value)
+			return "", fmt.Errorf("%s: unable to encode nested %T", obj.position(), value)
 		}
 		var builder strings.Builder
 		for i, elem := range value {
@@ -60,9 +64,9 @@ func encodeEnviron(value any, root bool) (string, error) {
 			builder.WriteString(enc)
 		}
 		return builder.String(), nil
-	case map[string]any:
+	case map[string]Object:
 		if !root {
-			return "", fmt.Errorf("unable to encode nested %T", value)
+			return "", fmt.Errorf("%s: unable to encode nested %T", obj.position(), value)
 		}
 		var builder strings.Builder
 		first := true
@@ -81,20 +85,22 @@ func encodeEnviron(value any, root bool) (string, error) {
 		}
 		return builder.String(), nil
 	default:
-		return "", fmt.Errorf("unable to encode %T", value)
+		return "", fmt.Errorf("%s: unable to encode %T", obj.position(), value)
 	}
 }
 
-func (ev *Evaluator) output(result *Object) (string, error) {
+func (ev *Evaluator) output(result Object) (Object, error) {
 	hashlib := fnv.New64()
 	hashValue(hashlib, result)
 	hashstr := hex.EncodeToString(hashlib.Sum(nil))
 
 	names := make([]string, 0)
-	for node := result; node != nil; node = node.parent {
-		if nameAny, ok := node.values["@name"]; ok {
-			if name, ok := nameAny.(string); ok && (len(names) == 0 || names[len(names)-1] != name) {
-				names = append(names, name)
+	for node := &result; node != nil; node = node.parent {
+		if mapv, ok := node.value.(map[string]Object); ok {
+			if nameAny, ok := mapv["@name"]; ok {
+				if name, ok := nameAny.value.(string); ok && (len(names) == 0 || names[len(names)-1] != name) {
+					names = append(names, name)
+				}
 			}
 		}
 	}
@@ -106,7 +112,7 @@ func (ev *Evaluator) output(result *Object) (string, error) {
 	cwd, _ := os.Getwd()
 	outdir := path.Join(cwd, ev.CacheDir, hashstr)
 	if _, err := os.Stat(outdir); (ev.DryRun || err == nil) && !ev.Force {
-		return outdir, nil
+		return Object{value: outdir}, nil
 	}
 
 	start := time.Now()
@@ -115,36 +121,37 @@ func (ev *Evaluator) output(result *Object) (string, error) {
 	success := false
 	defer func() {
 		if !success {
-			fmt.Println("failed")
 			os.RemoveAll(outdir)
 		}
 	}()
 
-	install, ok := result.values["@output"].(string)
+	values := result.value.(map[string]Object)
+
+	install, ok := values["@output"].value.(string)
 	if !ok {
-		return "", fmt.Errorf("@output must be a string")
+		return Object{}, fmt.Errorf("%s: @output must be a string", values["@output"].position())
 	}
 
 	interpreter := ev.Interpreter
-	if interpreterAny, ok := result.values["@interpreter"]; ok {
-		if str, ok := interpreterAny.(string); ok {
+	if interpreterAny, ok := values["@interpreter"]; ok {
+		if str, ok := interpreterAny.value.(string); ok {
 			interpreter = str
 		} else {
-			return "", fmt.Errorf("@interpreter must be a string")
+			return Object{}, fmt.Errorf("%s: @interpreter must be a string", interpreterAny.position())
 		}
 	}
 
 	builddir, err := os.MkdirTemp("", "bake-")
 	if err != nil {
-		return "", err
+		return Object{}, err
 	}
 	defer os.RemoveAll(builddir)
 	environ := append(os.Environ(), "out="+outdir)
-	for key, value := range result.values {
+	for key, value := range values {
 		if key != "" && key[0] == '$' {
 			enc, err := encodeEnviron(value, true)
 			if err != nil {
-				return "", err
+				return Object{}, err
 			}
 			environ = append(environ, key[1:]+"="+enc)
 		}
@@ -164,8 +171,7 @@ func (ev *Evaluator) output(result *Object) (string, error) {
 	cmd.Stdout = stdout
 	cmd.Stderr = stdout
 	if err := cmd.Run(); err != nil {
-		fmt.Fprintf(os.Stderr, "building %s failed: %v\n%s\n\n", hashstr, err, string(logbuf.Get()))
-		return "", err
+		return Object{}, fmt.Errorf("%s: %w\n", values["@output"].position(), err)
 	}
 
 	dur := time.Since(start).Round(time.Millisecond)
@@ -176,5 +182,5 @@ func (ev *Evaluator) output(result *Object) (string, error) {
 	}
 
 	success = true
-	return outdir, nil
+	return Object{value: outdir}, nil
 }

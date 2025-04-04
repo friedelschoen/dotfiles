@@ -11,7 +11,8 @@ import (
 func writeDot(filename string, edges []Edge) {
 	dot, err := os.Create(filename)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 	defer dot.Close()
 
@@ -49,10 +50,10 @@ func main() {
 	}
 
 	filename := ""
-	scope := make(map[string]any)
+	scope := make(map[string]Object)
 	for _, arg := range flag.Args() {
 		if name, value, ok := strings.Cut(arg, "="); ok {
-			scope[name] = value
+			scope[name] = Object{filename: "<commandline>", value: value}
 		} else if filename == "" {
 			filename = arg
 		} else {
@@ -66,9 +67,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	ast, err := parseFile(filename, nil)
+	ast, err := parseFile(Object{filename: "<commandline>"}, filename, nil)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	os.MkdirAll(ev.CacheDir, 0755)
@@ -76,7 +78,8 @@ func main() {
 
 	res, err := ev.resolve(ast, scope)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	if dotName != "" {
@@ -86,7 +89,7 @@ func main() {
 	if jsonOutput {
 		json.NewEncoder(os.Stdout).Encode(res)
 	} else {
-		switch res := res.(type) {
+		switch res := res.value.(type) {
 		case string:
 			fmt.Printf("%s\n", res)
 			if !noResult {

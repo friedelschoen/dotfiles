@@ -5,10 +5,10 @@
     "$paths": [
         "./dotfiles",
         {
-            "@include": "apps.json"
+            "@include": "services.json"
         },
         {
-            "@include": "services.json"
+            "@include": "apps.json"
         }
     ]
 }
