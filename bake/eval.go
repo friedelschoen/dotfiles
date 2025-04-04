@@ -22,11 +22,12 @@ import (
 type Edge [2]string
 
 type Evaluator struct {
-	Force    bool
-	DryRun   bool
-	CacheDir string
-	LogDir   string
-	Serial   bool
+	Force       bool
+	DryRun      bool
+	CacheDir    string
+	LogDir      string
+	Serial      bool
+	Interpreter string
 
 	Edges []Edge
 }
@@ -278,7 +279,7 @@ func (ev *Evaluator) output(result *Object) (string, error) {
 		return "", fmt.Errorf("@output must be a string")
 	}
 
-	interpreter := "sh"
+	interpreter := ev.Interpreter
 	if interpreterAny, ok := result.values["@interpreter"]; ok {
 		if str, ok := interpreterAny.(string); ok {
 			interpreter = str
@@ -322,7 +323,7 @@ func (ev *Evaluator) output(result *Object) (string, error) {
 
 	fmt.Fprint(os.Stderr, hashstr)
 	if len(names) > 0 {
-		fmt.Fprintf(os.Stderr, " %s\n", strings.Join(names, "->"))
+		fmt.Fprintf(os.Stderr, " %s\n", strings.Join(names, " > "))
 	} else {
 		fmt.Fprintln(os.Stderr)
 	}

@@ -35,6 +35,7 @@ func main() {
 	flag.BoolVar(&noResult, "no-result", false, "disables creation of result-symlink")
 	flag.StringVar(&dotName, "graph", "", "`destination` of dependency graph (DOT formatted)")
 	flag.BoolVar(&ev.Serial, "serial", false, "do not build output asynchronous")
+	flag.StringVar(&ev.Interpreter, "interpreter", "sh", "default interpreter for @output")
 	flag.Parse()
 
 	if ev.DryRun && ev.Force {
