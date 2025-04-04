@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/hex"
 	"fmt"
-	"hash/crc64"
+	"hash/fnv"
 	"io"
 	"maps"
 	"os"
@@ -12,6 +12,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func hashValue(hashlib io.Writer, value any) {
@@ -85,14 +86,14 @@ func encodeEnviron(value any, root bool) (string, error) {
 }
 
 func (ev *Evaluator) output(result *Object) (string, error) {
-	hashlib := crc64.New(crc64.MakeTable(crc64.ECMA))
+	hashlib := fnv.New64()
 	hashValue(hashlib, result)
 	hashstr := hex.EncodeToString(hashlib.Sum(nil))
 
 	names := make([]string, 0)
 	for node := result; node != nil; node = node.parent {
 		if nameAny, ok := node.values["@name"]; ok {
-			if name, ok := nameAny.(string); ok {
+			if name, ok := nameAny.(string); ok && (len(names) == 0 || names[len(names)-1] != name) {
 				names = append(names, name)
 			}
 		}
@@ -107,6 +108,8 @@ func (ev *Evaluator) output(result *Object) (string, error) {
 	if _, err := os.Stat(outdir); (ev.DryRun || err == nil) && !ev.Force {
 		return outdir, nil
 	}
+
+	start := time.Now()
 
 	os.RemoveAll(outdir)
 	success := false
@@ -135,6 +138,7 @@ func (ev *Evaluator) output(result *Object) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	defer os.RemoveAll(builddir)
 	environ := append(os.Environ(), "out="+outdir)
 	for key, value := range result.values {
 		if key != "" && key[0] == '$' {
@@ -164,11 +168,11 @@ func (ev *Evaluator) output(result *Object) (string, error) {
 		return "", err
 	}
 
-	fmt.Fprint(os.Stderr, hashstr)
+	dur := time.Since(start).Round(time.Millisecond)
 	if len(names) > 0 {
-		fmt.Fprintf(os.Stderr, " %s\n", strings.Join(names, " > "))
+		fmt.Fprintf(os.Stderr, "%s %s (%v)\n", hashstr, strings.Join(names, " > "), dur)
 	} else {
-		fmt.Fprintln(os.Stderr)
+		fmt.Fprintf(os.Stderr, "%s (%v)\n", hashstr, dur)
 	}
 
 	success = true
