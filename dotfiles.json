@@ -1,0 +1,14 @@
+{
+    "$apps": {
+        "@include": "apps.json"
+    },
+    "$services": {
+        "@include": "services.json"
+    },
+    "@output": [
+        "@multiline",
+        "mkdir $out",
+        "ln -sv $apps $out/apps",
+        "ln -sv $services $out/services"
+    ]
+}

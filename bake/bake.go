@@ -81,6 +81,7 @@ func main() {
 	case string:
 		fmt.Printf("%s\n", res)
 		if !noResult {
+			os.Remove(resultName)
 			os.Symlink(res, resultName)
 		}
 	case []any:
@@ -93,7 +94,12 @@ func main() {
 			filename := fmt.Sprintf("%s-%d", resultName, i)
 			fmt.Printf("%s\n", res)
 			if !noResult {
-				os.Symlink(rs, filename)
+				if stat, err := os.Stat(filename); err != nil && (stat.Mode()&os.ModeSymlink) == 0 {
+					fmt.Printf("unable to make symlink: exist\n")
+				} else {
+					os.Remove(filename)
+					os.Symlink(rs, filename)
+				}
 			}
 		}
 	}

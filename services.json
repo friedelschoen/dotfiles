@@ -4,6 +4,7 @@
         "service": {
             "@name": "service",
             "@output": [
+                "@multiline",
                 "mkdir -p $out/$name",
                 "if [ \"x$enable\" = \"x\" ]; then",
                 "  touch $out/$name/down",
@@ -13,84 +14,169 @@
         }
     },
     "@expand": "merge",
-    "$prefix": "config/",
     "$paths": [
         {
             "$name": "9wm",
             "$enable": false,
-            "$run": "#!/bin/sh\n\nSVDIR=.. sv check xserver > /dev/null || exit 1\n\ncd $HOMEs\nexec 9wm\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "",
+                "SVDIR=.. sv check xserver > /dev/null || exit 1",
+                "",
+                "cd $HOMEs",
+                "exec 9wm"
+            ],
             "@expand": "service"
         },
         {
             "$name": "battery-applet",
             "$enable": true,
-            "$run": "#!/bin/sh\n\nexec cbatticon\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "",
+                "exec cbatticon"
+            ],
             "@expand": "service"
         },
         {
             "$name": "blueman-applet",
             "$enable": true,
-            "$run": "#!/bin/sh\n\nexec blueman-applet\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "",
+                "exec blueman-applet"
+            ],
             "@expand": "service"
         },
         {
             "$name": "dbus-session",
             "$enable": true,
-            "$run": "#!/bin/sh\n\nexec dbus-daemon --nofork --session\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "",
+                "exec dbus-daemon --nofork --session"
+            ],
             "@expand": "service"
         },
         {
             "$name": "dwm",
             "$enable": true,
-            "$run": "#!/bin/sh\n\ncd $HOME\nexec dwm\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "",
+                "cd $HOME",
+                "exec dwm"
+            ],
             "@expand": "service"
         },
         {
             "$name": "nm-applet",
             "$enable": true,
-            "$run": "#!/bin/sh\n\nexec nm-applet\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "",
+                "exec nm-applet"
+            ],
             "@expand": "service"
         },
         {
             "$name": "pa-applet",
             "$enable": true,
-            "$run": "#!/bin/sh\n\nexec pa-applet\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "",
+                "exec pa-applet"
+            ],
             "@expand": "service"
         },
         {
             "$name": "slstatus",
             "$enable": true,
-            "$run": "#!/bin/sh\n\nFIFO=/tmp/slstatus.fifo\n\n[ -p $FIFO ] || rm -f $FIFO\nmkfifo $FIFO\n\nexec slstatus -p $FIFO\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "",
+                "FIFO=/tmp/slstatus.fifo",
+                "",
+                "[ -p $FIFO ] || rm -f $FIFO",
+                "mkfifo $FIFO",
+                "",
+                "exec slstatus -p $FIFO"
+            ],
             "@expand": "service"
         },
         {
             "$name": "slstatus-xbps",
             "$enable": true,
-            "$run": "#!/bin/bash\n\nOUTPUT=/tmp/xbps-updates.txt\n\nwhile true; do\n    updates=$(xbps-install -Mun | wc -l)\n\n    if [ $updates -ne 0 ]; then\n        echo $updates > $OUTPUT\n    else\n        echo up-to-date > $OUTPUT\n    fi\n    sleep 120\ndone\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/bash",
+                "",
+                "OUTPUT=/tmp/xbps-updates.txt",
+                "",
+                "while true; do",
+                "    updates=$(xbps-install -Mun | wc -l)",
+                "",
+                "    if [ $updates -ne 0 ]; then",
+                "        echo $updates > $OUTPUT",
+                "    else",
+                "        echo up-to-date > $OUTPUT",
+                "    fi",
+                "    sleep 120",
+                "done"
+            ],
             "@expand": "service"
         },
         {
             "$name": "stw-service",
             "$enable": true,
-            "$run": "#!/bin/sh\nexec stw -p 1 -B 10 -y 20 psvstat ~/.xservice/*\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "exec stw -p 1 -B 10 -y 20 psvstat ~/.xservice/*"
+            ],
             "@expand": "service"
         },
         {
             "$name": "tiramisu",
             "$enable": true,
-            "$run": "#!/bin/sh\n\nSVDIR=.. sv check slstatus > /dev/null || exit 1\n\nexec tiramisu -o '\\\\x04#source\\\\x05#summary: #body\\\\n' | xargs -i printf '%b' '{}' > /tmp/slstatus.fifo\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "",
+                "SVDIR=.. sv check slstatus > /dev/null || exit 1",
+                "",
+                "exec tiramisu -o '\\\\x04#source\\\\x05#summary: #body\\\\n' | xargs -i printf '%b' '{}' > /tmp/slstatus.fifo"
+            ],
             "@expand": "service"
         },
         {
             "$name": "udiskie",
             "$enable": true,
-            "$run": "#!/bin/sh\n\nexec udiskie -ant\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "",
+                "exec udiskie -ant"
+            ],
             "@expand": "service"
         },
         {
             "$name": "xfce-polkit",
             "$enable": true,
-            "$run": "#!/bin/sh\n\nexec /usr/libexec/xfce-polkit\n",
+            "$run": [
+                "@multiline",
+                "#!/bin/sh",
+                "",
+                "exec /usr/libexec/xfce-polkit"
+            ],
             "@expand": "service"
         }
     ]

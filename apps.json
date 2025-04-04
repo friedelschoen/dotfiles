@@ -23,6 +23,7 @@
             "$config": "./configs/dmenu.h",
             "@name": "dmenu",
             "@output": [
+                "@multiline",
                 "cd $root",
                 "cp $config dmenu.h",
                 "make PREFIX=$out install"
@@ -45,6 +46,7 @@
             "$config": "./configs/dwm.h",
             "@name": "dwm",
             "@output": [
+                "@multiline",
                 "cd $root",
                 "cp $config config.h",
                 "make PREFIX=$out install"
@@ -58,6 +60,7 @@
             },
             "@name": "gitin",
             "@output": [
+                "@multiline",
                 "cd $source",
                 "make PREFIX=$out install"
             ]
@@ -70,6 +73,7 @@
             },
             "@name": "pretty-sv",
             "@output": [
+                "@multiline",
                 "cd $source",
                 "make PREFIX=$out install"
             ]
@@ -90,6 +94,7 @@
             "$config": "./configs/slstatus.h",
             "@name": "slstatus",
             "@output": [
+                "@multiline",
                 "cd $root",
                 "cp $config config.h",
                 "make PREFIX=$out install"
@@ -112,6 +117,7 @@
             "$config": "./configs/st.h",
             "@name": "st",
             "@output": [
+                "@multiline",
                 "cd $root",
                 "cp $config config.h",
                 "make PREFIX=$out install"
@@ -126,6 +132,7 @@
             "$config": "./configs/stw.h",
             "@name": "stw",
             "@output": [
+                "@multiline",
                 "cd $source",
                 "cp $config config.h",
                 "make PREFIX=$out install"
@@ -150,6 +157,7 @@
             "$config": "./configs/surf.h",
             "@name": "surf",
             "@output": [
+                "@multiline",
                 "cd $root",
                 "cp $config config.h",
                 "make PREFIX=$out install"
@@ -170,6 +178,7 @@
             "$config": "./configs/tabbed.h",
             "@name": "tabbed",
             "@output": [
+                "@multiline",
                 "cd $root",
                 "cp $config config.h",
                 "make PREFIX=$out install"
@@ -183,6 +192,7 @@
             },
             "@name": "textselect",
             "@output": [
+                "@multiline",
                 "cd $source",
                 "mkdir -p $out/bin $out/share/man/man1",
                 "make PREFIX=$out install"
@@ -196,13 +206,11 @@
             },
             "@name": "weakbox",
             "@output": [
+                "@multiline",
                 "cd $source",
                 "mkdir -p $out/bin $out/share/man/man1",
                 "make PREFIX=$out install"
             ]
-        },
-        {
-            "@include": "services.json"
         }
     ]
 }

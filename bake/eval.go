@@ -36,7 +36,7 @@ func (ev *Evaluator) interpolate(str string, scope map[string]any) (any, error) 
 	if str == "" {
 		return str, nil
 	}
-	if str[0] == '@' {
+	if str[0] == '@' && str != "@multiline" {
 		varName := str[1:]
 		replacement, found := scope[varName]
 		if !found {
@@ -72,6 +72,15 @@ func (ev *Evaluator) interpolate(str string, scope map[string]any) (any, error) 
 	return builder.String(), nil
 }
 
+func copyMapKeep[K comparable, V any](dest map[K]V, source map[K]V) {
+	for k, v := range source {
+		_, ok := dest[k]
+		if !ok {
+			dest[k] = v
+		}
+	}
+}
+
 func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 	switch ast := ast.(type) {
 	case *Object:
@@ -100,13 +109,15 @@ func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 			if !ok {
 				return nil, fmt.Errorf("@includes expects object")
 			}
-			maps.Copy(ast.defines, otherobject.defines)
-			maps.Copy(ast.values, otherobject.values)
+			copyMapKeep(ast.defines, otherobject.defines)
+			copyMapKeep(ast.values, otherobject.values)
 			ast.includes = append(ast.includes, otherobject.includes...)
 			ast.extends = append(ast.extends, otherobject.extends...)
 
-			scope = maps.Clone(scope)
-			maps.Copy(scope, otherobject.defines)
+			if len(otherobject.defines) > 0 {
+				scope = maps.Clone(scope)
+				copyMapKeep(scope, otherobject.defines)
+			}
 		}
 		if !ev.Serial {
 			var (
@@ -173,6 +184,22 @@ func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 				if err != nil {
 					return nil, err
 				}
+			}
+		}
+		if len(ast) > 0 {
+			if head, ok := ast[0].(string); ok && head == "@multiline" {
+				var builder strings.Builder
+				for i, elem := range ast[1:] {
+					selem, ok := elem.(string)
+					if !ok {
+						return nil, fmt.Errorf("non-string in @multiline-array: %T", elem)
+					}
+					if i > 0 {
+						builder.WriteByte('\n')
+					}
+					builder.WriteString(selem)
+				}
+				return builder.String(), nil
 			}
 		}
 	case string:
@@ -261,24 +288,8 @@ func (ev *Evaluator) output(result *Object) (string, error) {
 		}
 	}()
 
-	install := ""
-	switch outputValue := result.values["@output"].(type) {
-	case string:
-		install = outputValue
-	case []any:
-		var builder strings.Builder
-		for i, elem := range outputValue {
-			if i > 0 {
-				builder.WriteByte('\n')
-			}
-			elemStr, ok := elem.(string)
-			if !ok {
-				return "", fmt.Errorf("@output expected string or string[], got %T in array", elem)
-			}
-			builder.WriteString(elemStr)
-		}
-		install = builder.String()
-	default:
+	install, ok := result.values["@output"].(string)
+	if !ok {
 		return "", fmt.Errorf("@output must be a string")
 	}
 

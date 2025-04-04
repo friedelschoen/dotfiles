@@ -3,6 +3,7 @@
         "patch": {
             "@name": "patch",
             "@output": [
+                "@multiline",
                 "cp -r $source $out",
                 "cd $out",
                 "for patch in $patches; do",
@@ -14,6 +15,7 @@
             "@name": "fetch",
             "@interpreter": "bash",
             "@output": [
+                "@multiline",
                 "curl -L $url -o archive",
                 "mkdir source",
                 "if file archive | grep -q \"gzip compressed\"; then",
@@ -38,6 +40,7 @@
         "merge": {
             "@name": "merge",
             "@output": [
+                "@multiline",
                 "mkdir -p \"$out/$prefix\"",
                 "",
                 "for src in $paths; do",
