@@ -100,11 +100,12 @@ func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 			}
 			maps.Copy(ast.defines, otherobject.defines)
 			maps.Copy(ast.values, otherobject.values)
+			ast.includes = append(ast.includes, otherobject.includes...)
 			ast.extends = append(ast.extends, otherobject.extends...)
-			ast.includes = append(ast.extends, otherobject.includes...)
+
+			scope = maps.Clone(scope)
+			maps.Copy(scope, ast.defines)
 		}
-		newscope := maps.Clone(scope)
-		maps.Copy(newscope, ast.defines)
 		if !ev.Serial {
 			var (
 				wg   sync.WaitGroup
@@ -115,7 +116,7 @@ func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 				wg.Add(1)
 				go func() {
 					defer wg.Done()
-					val, err := ev.resolve(v, newscope)
+					val, err := ev.resolve(v, scope)
 					mu.Lock()
 					ast.values[k] = val
 					errs = append(errs, err)
@@ -129,7 +130,7 @@ func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 		} else {
 			var err error
 			for k, v := range ast.values {
-				ast.values[k], err = ev.resolve(v, newscope)
+				ast.values[k], err = ev.resolve(v, scope)
 				if err != nil {
 					return nil, err
 				}

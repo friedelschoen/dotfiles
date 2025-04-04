@@ -79,8 +79,10 @@ func main() {
 
 	switch res := res.(type) {
 	case string:
-		fmt.Printf("%s -> %s\n", res, resultName)
-		os.Symlink(res, resultName)
+		fmt.Printf("%s\n", res)
+		if !noResult {
+			os.Symlink(res, resultName)
+		}
 	case []any:
 		for i, r := range res {
 			rs, ok := r.(string)
@@ -89,8 +91,10 @@ func main() {
 				os.Exit(1)
 			}
 			filename := fmt.Sprintf("%s-%d", resultName, i)
-			fmt.Printf("%s -> %s\n", res, filename)
-			os.Symlink(rs, filename)
+			fmt.Printf("%s\n", res)
+			if !noResult {
+				os.Symlink(rs, filename)
+			}
 		}
 	}
 }
