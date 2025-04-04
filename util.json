@@ -38,14 +38,14 @@
         "merge": {
             "@name": "merge",
             "@output": [
-                "mkdir -p \"$out\"",
+                "mkdir -p \"$out/$prefix\"",
                 "",
                 "for src in $paths; do",
                 "    [ -d \"$src\" ] || continue",
                 "",
                 "    find \"$src\" -type f -o -type l | while read -r file; do",
                 "        rel=\"${file#$src/}\"",
-                "        dest=\"$out/$rel\"",
+                "        dest=\"$out/$prefix/$rel\"",
                 "",
                 "        mkdir -p \"$(dirname \"$dest\")\"",
                 "",

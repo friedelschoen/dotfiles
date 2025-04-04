@@ -202,11 +202,7 @@
             ]
         },
         {
-            "@name": "services",
-            "@output": [
-                "mkdir -p $out",
-                "echo hello > $out/hello"
-            ]
+            "@include": "services.json"
         }
     ]
 }

@@ -1,0 +1,97 @@
+{
+    "@include": "util.json",
+    "@define": {
+        "service": {
+            "@name": "service",
+            "@output": [
+                "mkdir -p $out/$name",
+                "if [ \"x$enable\" = \"x\" ]; then",
+                "  touch $out/$name/down",
+                "fi",
+                "echo \"$run\" > $out/$name/run"
+            ]
+        }
+    },
+    "@expand": "merge",
+    "$prefix": "config/",
+    "$paths": [
+        {
+            "$name": "9wm",
+            "$enable": false,
+            "$run": "#!/bin/sh\n\nSVDIR=.. sv check xserver > /dev/null || exit 1\n\ncd $HOMEs\nexec 9wm\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "battery-applet",
+            "$enable": true,
+            "$run": "#!/bin/sh\n\nexec cbatticon\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "blueman-applet",
+            "$enable": true,
+            "$run": "#!/bin/sh\n\nexec blueman-applet\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "dbus-session",
+            "$enable": true,
+            "$run": "#!/bin/sh\n\nexec dbus-daemon --nofork --session\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "dwm",
+            "$enable": true,
+            "$run": "#!/bin/sh\n\ncd $HOME\nexec dwm\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "nm-applet",
+            "$enable": true,
+            "$run": "#!/bin/sh\n\nexec nm-applet\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "pa-applet",
+            "$enable": true,
+            "$run": "#!/bin/sh\n\nexec pa-applet\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "slstatus",
+            "$enable": true,
+            "$run": "#!/bin/sh\n\nFIFO=/tmp/slstatus.fifo\n\n[ -p $FIFO ] || rm -f $FIFO\nmkfifo $FIFO\n\nexec slstatus -p $FIFO\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "slstatus-xbps",
+            "$enable": true,
+            "$run": "#!/bin/bash\n\nOUTPUT=/tmp/xbps-updates.txt\n\nwhile true; do\n    updates=$(xbps-install -Mun | wc -l)\n\n    if [ $updates -ne 0 ]; then\n        echo $updates > $OUTPUT\n    else\n        echo up-to-date > $OUTPUT\n    fi\n    sleep 120\ndone\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "stw-service",
+            "$enable": true,
+            "$run": "#!/bin/sh\nexec stw -p 1 -B 10 -y 20 psvstat ~/.xservice/*\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "tiramisu",
+            "$enable": true,
+            "$run": "#!/bin/sh\n\nSVDIR=.. sv check slstatus > /dev/null || exit 1\n\nexec tiramisu -o '\\\\x04#source\\\\x05#summary: #body\\\\n' | xargs -i printf '%b' '{}' > /tmp/slstatus.fifo\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "udiskie",
+            "$enable": true,
+            "$run": "#!/bin/sh\n\nexec udiskie -ant\n",
+            "@expand": "service"
+        },
+        {
+            "$name": "xfce-polkit",
+            "$enable": true,
+            "$run": "#!/bin/sh\n\nexec /usr/libexec/xfce-polkit\n",
+            "@expand": "service"
+        }
+    ]
+}

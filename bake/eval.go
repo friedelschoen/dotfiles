@@ -75,6 +75,8 @@ func (ev *Evaluator) interpolate(str string, scope map[string]any) (any, error) 
 func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 	switch ast := ast.(type) {
 	case *Object:
+		scope = maps.Clone(scope)
+		maps.Copy(scope, ast.defines)
 		for len(ast.includes) > 0 || len(ast.extends) > 0 {
 			var otherast any
 			if len(ast.includes) > 0 {
@@ -104,7 +106,7 @@ func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 			ast.extends = append(ast.extends, otherobject.extends...)
 
 			scope = maps.Clone(scope)
-			maps.Copy(scope, ast.defines)
+			maps.Copy(scope, otherobject.defines)
 		}
 		if !ev.Serial {
 			var (
