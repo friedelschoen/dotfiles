@@ -1,6 +1,8 @@
 {
     "@include": "util.json",
+    "@name": "apps",
     "@expand": "merge",
+    "$prefix": ".local",
     "$paths": [
         {
             "$root": {

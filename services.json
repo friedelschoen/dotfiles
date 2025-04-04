@@ -13,7 +13,9 @@
             ]
         }
     },
+    "@name": "services",
     "@expand": "merge",
+    "$prefix": ".xservice",
     "$paths": [
         {
             "$name": "9wm",
