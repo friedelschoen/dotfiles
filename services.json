@@ -9,7 +9,8 @@
                 "if [ \"x$enable\" = \"x\" ]; then",
                 "  touch $out/$name/down",
                 "fi",
-                "echo \"$run\" > $out/$name/run"
+                "echo \"$run\" > $out/$name/run",
+                "chmod +x $out/$name/run"
             ]
         }
     },
