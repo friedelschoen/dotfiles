@@ -32,7 +32,7 @@ func main() {
 	)
 
 	flag.BoolVar(&ev.Force, "force", false, "force building all outputs")
-	flag.BoolVar(&ev.Force, "dry", false, "do not build anything")
+	flag.BoolVar(&ev.DryRun, "dry", false, "do not build anything")
 	flag.StringVar(&ev.CacheDir, "cache", "cache", "`destination` of outputs")
 	flag.StringVar(&ev.LogDir, "log", "cache/log", "`destination` of logs of outputs")
 	flag.StringVar(&resultName, "result", "result", "`name` of result-symlink")
