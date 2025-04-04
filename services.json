@@ -2,7 +2,8 @@
     "@include": "util.json",
     "@define": {
         "service": {
-            "@name": "service",
+            "$name": "@name",
+            "@name": "service-{{name}}",
             "@output": [
                 "@multiline",
                 "mkdir -p $out/$name",
@@ -19,7 +20,9 @@
     "$prefix": ".xservice",
     "$paths": [
         {
-            "$name": "9wm",
+            "@define": {
+                "name": "9wm"
+            },
             "$enable": false,
             "$run": [
                 "@multiline",
@@ -33,7 +36,9 @@
             "@expand": "service"
         },
         {
-            "$name": "battery-applet",
+            "@define": {
+                "name": "battery-applet"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
@@ -44,7 +49,9 @@
             "@expand": "service"
         },
         {
-            "$name": "blueman-applet",
+            "@define": {
+                "name": "blueman-applet"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
@@ -55,7 +62,9 @@
             "@expand": "service"
         },
         {
-            "$name": "dbus-session",
+            "@define": {
+                "name": "dbus-session"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
@@ -66,7 +75,9 @@
             "@expand": "service"
         },
         {
-            "$name": "dwm",
+            "@define": {
+                "name": "dwm"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
@@ -78,7 +89,9 @@
             "@expand": "service"
         },
         {
-            "$name": "nm-applet",
+            "@define": {
+                "name": "nm-applet"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
@@ -89,7 +102,9 @@
             "@expand": "service"
         },
         {
-            "$name": "pa-applet",
+            "@define": {
+                "name": "pa-applet"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
@@ -100,7 +115,9 @@
             "@expand": "service"
         },
         {
-            "$name": "slstatus",
+            "@define": {
+                "name": "slstatus"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
@@ -116,7 +133,9 @@
             "@expand": "service"
         },
         {
-            "$name": "slstatus-xbps",
+            "@define": {
+                "name": "slstatus-xbps"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
@@ -138,7 +157,9 @@
             "@expand": "service"
         },
         {
-            "$name": "stw-service",
+            "@define": {
+                "name": "stw-service"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
@@ -148,7 +169,9 @@
             "@expand": "service"
         },
         {
-            "$name": "tiramisu",
+            "@define": {
+                "name": "tiramisu"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
@@ -161,7 +184,9 @@
             "@expand": "service"
         },
         {
-            "$name": "udiskie",
+            "@define": {
+                "name": "udiskie"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
@@ -172,7 +197,9 @@
             "@expand": "service"
         },
         {
-            "$name": "xfce-polkit",
+            "@define": {
+                "name": "xfce-polkit"
+            },
             "$enable": true,
             "$run": [
                 "@multiline",
