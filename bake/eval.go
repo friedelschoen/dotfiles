@@ -22,12 +22,13 @@ import (
 type Edge [2]string
 
 type Evaluator struct {
-	Force       bool
-	DryRun      bool
-	CacheDir    string
-	LogDir      string
-	Serial      bool
-	Interpreter string
+	Force        bool
+	DryRun       bool
+	CacheDir     string
+	LogDir       string
+	Serial       bool
+	Interpreter  string
+	NoEvalOutput bool
 
 	Edges []Edge
 }
@@ -149,7 +150,7 @@ func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 				}
 			}
 		}
-		if _, ok := ast.values["@output"]; ok {
+		if _, ok := ast.values["@output"]; ok && !ev.NoEvalOutput {
 			return ev.output(ast)
 		}
 		if unwrap, ok := ast.values["@"]; ok {

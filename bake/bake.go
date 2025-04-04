@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -22,10 +23,13 @@ func writeDot(filename string, edges []Edge) {
 }
 
 func main() {
-	ev := Evaluator{}
-	resultName := "result"
-	noResult := false
-	dotName := ""
+	var (
+		ev         Evaluator
+		resultName string
+		noResult   bool
+		dotName    string
+		jsonOutput bool
+	)
 
 	flag.BoolVar(&ev.Force, "force", false, "force building all outputs")
 	flag.BoolVar(&ev.Force, "dry", false, "do not build anything")
@@ -36,6 +40,8 @@ func main() {
 	flag.StringVar(&dotName, "graph", "", "`destination` of dependency graph (DOT formatted)")
 	flag.BoolVar(&ev.Serial, "serial", false, "do not build output asynchronous")
 	flag.StringVar(&ev.Interpreter, "interpreter", "sh", "default interpreter for @output")
+	flag.BoolVar(&ev.NoEvalOutput, "no-eval-output", false, "print @output in result")
+	flag.BoolVar(&jsonOutput, "json", false, "print result as JSON")
 	flag.Parse()
 
 	if ev.DryRun && ev.Force {
@@ -77,28 +83,32 @@ func main() {
 		writeDot(dotName, ev.Edges)
 	}
 
-	switch res := res.(type) {
-	case string:
-		fmt.Printf("%s\n", res)
-		if !noResult {
-			os.Remove(resultName)
-			os.Symlink(res, resultName)
-		}
-	case []any:
-		for i, r := range res {
-			rs, ok := r.(string)
-			if !ok {
-				fmt.Printf("expected string[]\n")
-				os.Exit(1)
-			}
-			filename := fmt.Sprintf("%s-%d", resultName, i)
+	if jsonOutput {
+		json.NewEncoder(os.Stdout).Encode(res)
+	} else {
+		switch res := res.(type) {
+		case string:
 			fmt.Printf("%s\n", res)
 			if !noResult {
-				if stat, err := os.Stat(filename); err != nil && (stat.Mode()&os.ModeSymlink) == 0 {
-					fmt.Printf("unable to make symlink: exist\n")
-				} else {
-					os.Remove(filename)
-					os.Symlink(rs, filename)
+				os.Remove(resultName)
+				os.Symlink(res, resultName)
+			}
+		case []any:
+			for i, r := range res {
+				rs, ok := r.(string)
+				if !ok {
+					fmt.Printf("expected string[]\n")
+					os.Exit(1)
+				}
+				filename := fmt.Sprintf("%s-%d", resultName, i)
+				fmt.Printf("%s\n", res)
+				if !noResult {
+					if stat, err := os.Stat(filename); err != nil && (stat.Mode()&os.ModeSymlink) == 0 {
+						fmt.Printf("unable to make symlink: exist\n")
+					} else {
+						os.Remove(filename)
+						os.Symlink(rs, filename)
+					}
 				}
 			}
 		}

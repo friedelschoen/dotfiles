@@ -23,6 +23,20 @@ type Object struct {
 	values   map[string]any
 }
 
+func (o *Object) MarshalJSON() ([]byte, error) {
+	newvalues := maps.Clone(o.values)
+	if len(o.defines) > 0 {
+		newvalues["@defines"] = o.defines
+	}
+	if len(o.includes) > 0 {
+		newvalues["@includes"] = o.includes
+	}
+	if len(o.extends) > 0 {
+		newvalues["@expands"] = o.extends
+	}
+	return json.Marshal(newvalues)
+}
+
 func (p *Parser) parseValue(parent *Object) (any, error) {
 	token, err := p.dec.Token()
 	if err != nil {
