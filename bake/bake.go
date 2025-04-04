@@ -22,13 +22,7 @@ func writeDot(filename string, edges []Edge) {
 }
 
 func main() {
-	ev := Evaluator{
-		Force:    false,
-		DryRun:   false,
-		CacheDir: "store",
-		LogDir:   "logs",
-	}
-
+	ev := Evaluator{}
 	resultName := "result"
 	noResult := false
 	dotName := ""
@@ -40,6 +34,7 @@ func main() {
 	flag.StringVar(&resultName, "result", "result", "`name` of result-symlink")
 	flag.BoolVar(&noResult, "no-result", false, "disables creation of result-symlink")
 	flag.StringVar(&dotName, "graph", "", "`destination` of dependency graph (DOT formatted)")
+	flag.BoolVar(&ev.Serial, "serial", false, "do not build output asynchronous")
 	flag.Parse()
 
 	if ev.DryRun && ev.Force {

@@ -26,6 +26,7 @@ type Evaluator struct {
 	DryRun   bool
 	CacheDir string
 	LogDir   string
+	Serial   bool
 
 	Edges []Edge
 }
@@ -103,25 +104,35 @@ func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 		}
 		newscope := maps.Clone(scope)
 		maps.Copy(newscope, ast.defines)
-		var (
-			wg   sync.WaitGroup
-			mu   sync.Mutex
-			errs []error
-		)
-		for k, v := range ast.values {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				val, err := ev.resolve(v, newscope)
-				mu.Lock()
-				ast.values[k] = val
-				errs = append(errs, err)
-				mu.Unlock()
-			}()
-		}
-		wg.Wait()
-		if err := errors.Join(errs...); err != nil {
-			return nil, err
+		if !ev.Serial {
+			var (
+				wg   sync.WaitGroup
+				mu   sync.Mutex
+				errs []error
+			)
+			for k, v := range ast.values {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+					val, err := ev.resolve(v, newscope)
+					mu.Lock()
+					ast.values[k] = val
+					errs = append(errs, err)
+					mu.Unlock()
+				}()
+			}
+			wg.Wait()
+			if err := errors.Join(errs...); err != nil {
+				return nil, err
+			}
+		} else {
+			var err error
+			for k, v := range ast.values {
+				ast.values[k], err = ev.resolve(v, newscope)
+				if err != nil {
+					return nil, err
+				}
+			}
 		}
 		if _, ok := ast.values["@output"]; ok {
 			return ev.output(ast)
@@ -130,25 +141,35 @@ func (ev *Evaluator) resolve(ast any, scope map[string]any) (any, error) {
 			return unwrap, nil
 		}
 	case []any:
-		var (
-			wg   sync.WaitGroup
-			mu   sync.Mutex
-			errs []error
-		)
-		for i, elem := range ast {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				val, err := ev.resolve(elem, scope)
-				mu.Lock()
-				ast[i] = val
-				errs = append(errs, err)
-				mu.Unlock()
-			}()
-		}
-		wg.Wait()
-		if err := errors.Join(errs...); err != nil {
-			return nil, err
+		if !ev.Serial {
+			var (
+				wg   sync.WaitGroup
+				mu   sync.Mutex
+				errs []error
+			)
+			for i, elem := range ast {
+				wg.Add(1)
+				go func() {
+					defer wg.Done()
+					val, err := ev.resolve(elem, scope)
+					mu.Lock()
+					ast[i] = val
+					errs = append(errs, err)
+					mu.Unlock()
+				}()
+			}
+			wg.Wait()
+			if err := errors.Join(errs...); err != nil {
+				return nil, err
+			}
+		} else {
+			var err error
+			for i, elem := range ast {
+				ast[i], err = ev.resolve(elem, scope)
+				if err != nil {
+					return nil, err
+				}
+			}
 		}
 	case string:
 		return ev.interpolate(ast, scope)
