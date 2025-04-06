@@ -12,7 +12,7 @@
             ]
         },
         "fetch": {
-            "@name": "fetch",
+            "@name": "download",
             "@interpreter": "bash",
             "@output": [
                 "@multiline",

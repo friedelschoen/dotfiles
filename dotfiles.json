@@ -1,14 +1,14 @@
 {
-    "@include": "util.json",
+    "@include": "./util.json",
     "@name": "merge-dotfiles",
     "@expand": "merge",
-    "$paths": [
+    "paths": [
         "./dotfiles",
         {
-            "@include": "services.json"
+            "@include": "./services.json"
         },
         {
-            "@include": "apps.json"
+            "@include": "./apps.json"
         }
     ]
 }

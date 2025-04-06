@@ -1,8 +1,8 @@
 {
-    "@include": "util.json",
+    "@include": "./util.json",
     "@define": {
         "service": {
-            "$name": "@name",
+            "name": "@name",
             "@name": "service-{{name}}",
             "@output": [
                 "@multiline",
@@ -17,14 +17,14 @@
     },
     "@name": "services",
     "@expand": "merge",
-    "$prefix": ".xservice",
-    "$paths": [
+    "prefix": ".xservice",
+    "paths": [
         {
             "@define": {
                 "name": "9wm"
             },
-            "$enable": false,
-            "$run": [
+            "enable": false,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "",
@@ -39,8 +39,8 @@
             "@define": {
                 "name": "battery-applet"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "",
@@ -52,8 +52,8 @@
             "@define": {
                 "name": "blueman-applet"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "",
@@ -65,8 +65,8 @@
             "@define": {
                 "name": "dbus-session"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "",
@@ -78,8 +78,8 @@
             "@define": {
                 "name": "dwm"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "",
@@ -92,8 +92,8 @@
             "@define": {
                 "name": "nm-applet"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "",
@@ -105,8 +105,8 @@
             "@define": {
                 "name": "pa-applet"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "",
@@ -118,8 +118,8 @@
             "@define": {
                 "name": "slstatus"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "",
@@ -136,8 +136,8 @@
             "@define": {
                 "name": "slstatus-xbps"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/bash",
                 "",
@@ -160,8 +160,8 @@
             "@define": {
                 "name": "stw-service"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "exec stw -p 1 -B 10 -y 20 psvstat ~/.xservice/*"
@@ -172,8 +172,8 @@
             "@define": {
                 "name": "tiramisu"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "",
@@ -187,8 +187,8 @@
             "@define": {
                 "name": "udiskie"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "",
@@ -200,8 +200,8 @@
             "@define": {
                 "name": "xfce-polkit"
             },
-            "$enable": true,
-            "$run": [
+            "enable": true,
+            "run": [
                 "@multiline",
                 "#!/bin/sh",
                 "",

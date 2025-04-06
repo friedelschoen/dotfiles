@@ -2,7 +2,9 @@ list:
     @just --list
 
 build:
-    bake/bake dotfiles.json
+    bake dotfiles.json
 
-stow:
-    stow -v result
+install:
+    rm -r ~/.dotfiles
+    cp -Lr result ~/.dotfiles
+    stow -v -d ~/.dotfiles .
