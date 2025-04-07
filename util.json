@@ -4,7 +4,8 @@
             "@name": "patch",
             "@output": [
                 "@multiline",
-                "cp -r $source $out",
+                "cp -vr . $out",
+                "echo pwd=$PWD out=$out",
                 "cd $out",
                 "for patch in $patches; do",
                 "  patch -p1 -i $patch",
