@@ -1,0 +1,110 @@
+From 8b00960b306e49d698647d95ac2feed8cb39cc94 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Friedel=20Sch=C3=B6n?= <derfriedmundschoen@gmail.com>
+Date: Tue, 8 Apr 2025 00:58:42 +0200
+Subject: [PATCH] layoutmenu using xmenu
+
+---
+ config.def.h |  6 +++++-
+ dwm.c        | 55 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 60 insertions(+), 1 deletion(-)
+
+diff --git a/config.def.h b/config.def.h
+index 9efa774..b241754 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -44,6 +44,10 @@ static const Layout layouts[] = {
+ 	{ "[M]",      monocle },
+ };
+
++static const char* layoutnames[] = {
++	"Tiling Layout", "Floating Layout", "Monocle Layout",
++};
++
+ /* key definitions */
+ #define MODKEY Mod1Mask
+ #define TAGKEYS(KEY,TAG) \
+@@ -102,7 +106,7 @@ static const Key keys[] = {
+ static const Button buttons[] = {
+ 	/* click                event mask      button          function        argument */
+ 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
++	{ ClkLtSymbol,          0,              Button3,        layoutmenu,     {0} },
+ 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
+ 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+ 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+diff --git a/dwm.c b/dwm.c
+index f1d86b2..183f895 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -178,6 +178,7 @@ static void grabkeys(void);
+ static void incnmaster(const Arg *arg);
+ static void keypress(XEvent *e);
+ static void killclient(const Arg *arg);
++static void layoutmenu(const Arg *arg);
+ static void manage(Window w, XWindowAttributes *wa);
+ static void mappingnotify(XEvent *e);
+ static void maprequest(XEvent *e);
+@@ -1028,6 +1029,60 @@ killclient(const Arg *arg)
+ 	}
+ }
+
++void
++layoutmenu(const Arg *arg) {
++	pid_t pid;
++	int inpipe[2], outpipe[2];
++	FILE *in, *out;
++	char buf[256];
++	int i;
++
++	if (pipe(inpipe) == -1 || pipe(outpipe) == -1)
++		return;
++
++	switch ((pid = fork())) {
++	case -1:
++		return;
++	case 0:
++		// Child: connect stdin and stdout, then exec xmenu
++		close(inpipe[1]);   // Close unused write end
++		dup2(inpipe[0], STDIN_FILENO);
++		close(inpipe[0]);
++
++		close(outpipe[0]);  // Close unused read end
++		dup2(outpipe[1], STDOUT_FILENO);
++		close(outpipe[1]);
++
++		execlp("xmenu", "xmenu", NULL);
++		_exit(1); // Exec failed
++	}
++
++	// Parent
++	close(inpipe[0]);  // Close unused read end
++	close(outpipe[1]); // Close unused write end
++
++	// Write layouts to xmenu's stdin
++	in = fdopen(inpipe[1], "w");
++	if (!in)
++		return;
++	for (i = 0; layouts[i].symbol && i < LENGTH(layouts); i++)
++		fprintf(in, "%s %s\t%d\n", layouts[i].symbol, layoutnames[i], i);
++	fclose(in); // Sends EOF to xmenu
++
++	// Read chosen layout from xmenu's stdout
++	out = fdopen(outpipe[0], "r");
++	if (!out)
++		return;
++	if (fgets(buf, sizeof(buf), out)) {
++		i = atoi(buf);
++		if (i >= 0 && i < LENGTH(layouts))
++			setlayout(&(Arg) { .v = &layouts[i] });
++	}
++	fclose(out);
++
++	waitpid(pid, NULL, 0); // Wait for xmenu to exit
++}
++
+ void
+ manage(Window w, XWindowAttributes *wa)
+ {
+--
+2.49.0
+

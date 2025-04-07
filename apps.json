@@ -41,7 +41,9 @@
                 "patches": [
                     "./patches/dwm-statusbar.diff",
                     "./patches/dwm-activetagindicatorbar-6.2.diff",
-                    "./patches/dwm-6.2-urg-border.diff"
+                    "./patches/dwm-6.2-urg-border.diff",
+                    "./patches/dwm-layoutmenu-6.2.diff",
+                    "./patches/dwm-bottomstack-6.1.diff"
                 ]
             },
             "config": "./configs/dwm.h",
@@ -201,6 +203,15 @@
                 "@multiline",
                 "mkdir -p $out/bin $out/share/man/man1",
                 "make PREFIX=$out install"
+            ]
+        },
+        {
+            "@source": "./assets",
+            "@name": "gmicro",
+            "@output": [
+                "@multiline",
+                "mkdir -p $out/bin",
+                "ln -sv $PWD/gmicro $out/bin"
             ]
         }
     ]

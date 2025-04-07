@@ -2,6 +2,6 @@ result: *.json
 	bake dotfiles.json
 
 install: result
-	rm -f ~/.dotfiles
-	ln -sv $$(realpath -s --relative-to=$$HOME $$(readlink $^)) ~/.dotfiles
+	rm -rf ~/.dotfiles
+	cp -rL result ~/.dotfiles
 	stow -v -d ~/.dotfiles .

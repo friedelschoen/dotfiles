@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+
+DEFAULT_FONT="Go Mono 8.5"
+
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('Vte', '2.91')
+
+from gi.repository import Gtk, Vte, GLib, Pango
+import os, sys, argparse
+
+flags = argparse.ArgumentParser("gmicro")
+flags.add_argument('-C', type=str, help='chdir first', default=None)
+flags.add_argument('--font', type=str, help='font to use', default=DEFAULT_FONT)
+flags.add_argument('--prog', type=str, help='program to execute', default="micro")
+flags.add_argument('micro_args', nargs='*', type=str, help='argments passed to micro')
+options = flags.parse_args()
+
+if options.C is not None:
+    os.chdir(options.C)
+
+term = Vte.Terminal()
+win = Gtk.Window()
+win.set_title("Micro Editor")
+win.connect('destroy', Gtk.main_quit)
+win.add(term)
+win.show_all()
+
+args = [ options.prog ] + options.micro_args
+term.spawn_async(Vte.PtyFlags.DEFAULT,
+            None,
+            args,
+            None,
+            GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+            None,
+            None,
+            -1,
+            None,
+            None
+            )
+
+term.set_font(Pango.FontDescription.from_string(options.font))
+term.set_cursor_shape(Vte.CursorShape.IBEAM)
+term.connect('child_exited', Gtk.main_quit)
+
+Gtk.main()

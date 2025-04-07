@@ -92,9 +92,16 @@ static const int lockfullscreen =
 
 static const Layout layouts[] = {
     /* symbol     arrange function */
-    {"[]=", tile}, /* first entry is default */
-    {"{ }", NULL}, /* no layout function means floating behavior */
-    {"[o]", monocle},
+    {"[]=", tile},        /* first entry is default */
+    {"{ }", NULL},        /* no layout function means floating behavior */
+    {"[o]", monocle},     /* */
+    {"TTT", bstack},      /* */
+    {"===", bstackhoriz}, /* */
+};
+
+static const char *layoutnames[] = {
+    "Tiled Layout", "Floating Layout",         "Monocle Layout",
+    "Stack Layout", "Stack Horizontal Layout",
 };
 
 /* key definitions */
@@ -120,6 +127,8 @@ static const Layout layouts[] = {
 
 #define monitor_backlight "intel_backlight"
 #define keyboard_backlight "smc::kbd_backlight"
+
+static const char *layoutmenu_cmd = "dwm_layoutmenu";
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
@@ -171,6 +180,7 @@ static const Key keys[] = {
 static const Button buttons[] = {
     /* click                event mask      button          function argument */
     {ClkLtSymbol, 0, Button1, cyclelayout, {.i = +1}},
+    {ClkLtSymbol, 0, Button3, layoutmenu, {0}},
     {ClkWinTitle, 0, Button2, zoom, {0}},
     {ClkStatusText, 0, Button2, spawn, COMMAND("st")},
     {ClkClientWin, MODKEY, Button1, movemouse, {0}},
