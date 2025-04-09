@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char font[] = "Go Mono:style=Regular,size=9";
+static char font[] = "Go Mono:style=Regular:size=9";
 static int borderpx = 5;
 
 /*
