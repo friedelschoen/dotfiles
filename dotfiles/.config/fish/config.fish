@@ -44,10 +44,10 @@ set -x MANPATH "$MANPATH:$HOME/.local/share/man"
 set -x PLAN9 "$HOME/plan9"
 set -x EDITOR "micro"
 
-set -xp PATH $HOME/.local/bin
-set -xp PATH $HOME/go/bin
+set -xa PATH $HOME/.local/bin
+set -xa PATH $HOME/go/bin
 set -xa PATH $HOME/opt/segger-jlink
-set -xa PATH $HOME/plan9/bin
+set -xa PATH $PLAN9/bin
 
 alias ls="exa"
 alias xo="xdg-open"
