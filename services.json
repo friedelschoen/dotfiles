@@ -7,7 +7,7 @@
             "@output": [
                 "@multiline",
                 "mkdir -p $out/$name",
-                "if [ \"x$enable\" = \"x\" ]; then",
+                "if [ $enable -eq 0 ]; then",
                 "  touch $out/$name/down",
                 "fi",
                 "echo \"$run\" > $out/$name/run",
