@@ -4,7 +4,7 @@
 setxkbmap -layout us -variant intl
 
 # set background
-xsetroot -solid '#282c34'
+feh --bg-center $HOME/.config/bgglenda.png --image-bg '#282c34'
 
 # set security
 xhost +si:localuser:$USER

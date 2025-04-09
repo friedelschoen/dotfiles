@@ -9,6 +9,18 @@
         },
         {
             "@include": "./apps.json"
+        },
+        {
+            "@name": "bgglenda",
+            "@source": {
+                "@expand": "fetch",
+                "url": "https://github.com/9fans/plan9port/archive/afea5fc3fd16a2865d0af52563f601a4c03d8256.tar.gz"
+            },
+            "@output": [
+                "@multiline",
+                "mkdir -p $out/.config",
+                "magick convert -resize 25% mac/spaceglenda.png $out/.config/bgglenda.png"
+            ]
         }
     ]
 }
