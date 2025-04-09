@@ -17,14 +17,25 @@
             "@interpreter": "bash",
             "@output": [
                 "@multiline",
-                "curl -L $url -o archive",
+                "curl -L $url -o $out",
+                "realhash=$(sha256sum $out | cut -d' ' -f1)",
+                "if [ \"$checksum\" != \"$realhash\" ]; then",
+                "   echo \"invalid hash:\t  expected: $realhash\n  got:     $checksum\"",
+                "fi"
+            ]
+        },
+        "unpack": {
+            "@name": "unpack",
+            "@interpreter": "bash",
+            "@output": [
+                "@multiline",
                 "mkdir source",
-                "if file archive | grep -q \"gzip compressed\"; then",
-                "    tar -C source -xf archive",
-                "elif file archive | grep -q \"XZ compressed\"; then",
-                "    tar -C source -xf archive",
-                "elif file archive | grep -q \"Zip archive\"; then",
-                "    unzip -qd source archive",
+                "if file $archive | grep -q \"gzip compressed\"; then",
+                "    tar -C source -xf $archive",
+                "elif file $archive | grep -q \"XZ compressed\"; then",
+                "    tar -C source -xf $archive",
+                "elif file $archive | grep -q \"Zip archive\"; then",
+                "    unzip -qd source $archive",
                 "else",
                 "    echo \"Unknown archive format\"",
                 "    exit 1",
