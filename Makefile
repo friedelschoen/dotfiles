@@ -1,5 +1,5 @@
 result: *.json
-	bake dotfiles.json
+	zon dotfiles.zon
 
 install: result
 	rm -rf ~/.dotfiles

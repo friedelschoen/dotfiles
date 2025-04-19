@@ -1,0 +1,169 @@
+let service = {
+    "name": "service",
+    "output": ''
+        mkdir -p $out/$name
+        if [ $enable -eq 0 ]; then
+          touch $out/$name/down
+        fi
+        echo \"$run\" > $out/$name/run
+        chmod +x $out/$name/run
+    ''
+} in output {
+    with util.merge,
+    "include": ./util.zon,
+    "name": "services",
+    "prefix": ".xservice",
+    "paths": 		[
+		output {
+			with service,
+			"name": "9wm",
+			"enable": false,
+			"run": ''
+				#!/bin/sh
+
+				SVDIR=.. sv check xserver > /dev/null || exit 1
+
+				cd $HOMEs
+				exec 9wm
+			''
+		},
+		output {
+			with service,
+			"name": "battery-applet",
+			"enable": true,
+			"run": ''
+				#!/bin/sh
+
+				exec cbatticon
+			''
+		},
+		output {
+			with service,
+			"name": "blueman-applet",
+			"enable": true,
+			"run": ''
+				#!/bin/sh
+
+				exec blueman-applet
+			''
+		},
+		output {
+			with service,
+			"name": "dbus-session",
+			"enable": true,
+			"run": ''
+				#!/bin/sh
+
+				exec dbus-daemon --nofork --session
+			''
+		},
+		output {
+			with service,
+			"name": "dwm",
+			"enable": true,
+			"run": ''
+				#!/bin/sh
+
+				cd $HOME
+				exec dwm
+			''
+		},
+		output {
+			with service,
+			"name": "nm-applet",
+			"enable": true,
+			"run": ''
+				#!/bin/sh
+
+				exec nm-applet
+			''
+		},
+		output {
+			with service,
+			"name": "pa-applet",
+			"enable": true,
+			"run": ''
+				#!/bin/sh
+
+				exec pa-applet
+			''
+		},
+		output {
+			with service,
+			"name": "slstatus",
+			"enable": true,
+			"run": ''
+				#!/bin/sh
+
+				FIFO=/tmp/slstatus.fifo
+
+				[ -p $FIFO ] || rm -f $FIFO
+				mkfifo $FIFO
+
+				exec slstatus -p $FIFO
+			''
+		},
+		output {
+			with service,
+			"name": "slstatus-xbps",
+			"enable": true,
+			"run": ''
+				#!/bin/bash
+
+				=/tmp/xbps-updates.txt
+
+				while true; do
+				    updates=$(xbps-install -Mun | wc -l)
+
+				    if [ $updates -ne 0 ]; then
+				        echo $updates > $
+				    else
+				        echo up-to-date > $
+				    fi
+				    sleep 120
+				done
+			''
+		},
+		output {
+			with service,
+			"name": "stw-service",
+			"enable": true,
+			"run": ''
+				#!/bin/sh
+				exec stw -p 1 -B 10 -y 20 psvstat ~/.xservice/*
+			''
+		},
+		output {
+			with service,
+			"name": "tiramisu",
+			"enable": true,
+			"run": ''
+				#!/bin/sh
+
+				SVDIR=.. sv check slstatus > /dev/null || exit 1
+
+				exec tiramisu -o '\\x04#source\\x05#summary: #body\\n' | xargs -i printf '%b' '{}' > /tmp/slstatus.fifo
+			''
+		},
+		output {
+			with service,
+			"name": "udiskie",
+			"enable": true,
+			"run": ''
+				#!/bin/sh
+
+				exec udiskie -ant
+			''
+		},
+		output {
+			with service,
+			"name": "xfce-polkit",
+			"enable": true,
+			"run": ''
+				#!/bin/sh
+
+				exec /usr/libexec/xfce-polkit
+			''
+		}
+    ]
+}
