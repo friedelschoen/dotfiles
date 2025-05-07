@@ -1,0 +1,1 @@
+[${notify_appname}] ${notify_summary}: ${notify_body}

@@ -32,7 +32,7 @@ static const int systraypinningfailfirst =
     1; /* 1: if pinning fails, display systray on the first monitor, False:
           display systray on the last monitor*/
 static const int showsystray = 1; /* 0 means no systray */
-static const char *fonts[] = {"Monaco:size=9"};
+static const char *fonts[] = {"Go:size=10"};
 
 // static const char *colors[][3] = { // dark
 //     /*               fg         bg         border   */

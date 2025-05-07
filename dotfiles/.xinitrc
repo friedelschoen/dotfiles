@@ -12,5 +12,4 @@ xhost +si:localuser:$USER
 # get resources config
 xrdb $HOME/.Xresources
 
-$HOME/.xservice/create-supervise.sh
-exec runsvdir $HOME/.xservice
+exec dbus-run-session runsvdir $HOME/.xservice
