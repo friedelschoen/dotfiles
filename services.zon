@@ -111,6 +111,14 @@ let service = fn (name) {
 
 			exec transmission-daemon -f
 			''
+		},
+		output {
+			with service("spotifyd"),
+			"enable": true,
+			"run": ''#!/bin/sh
+
+			exec spotifyd --no-daemon
+			''
 		}
     ]
 }
