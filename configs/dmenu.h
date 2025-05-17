@@ -21,7 +21,7 @@ static const char *prompt =
     NULL; /* -p  option; prompt to the left of input field */
 static const char *dynamic =
     NULL; /* -dy option; dynamic command to run on input change */
-static const char *fonts[] = {"Monaco:size=9"};
+static const char *fonts[] = {"Fira Sans:size=9"};
 static const char *colors[][3] = {
     // one dark
     /*               fg         bg         border   */

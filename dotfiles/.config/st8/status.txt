@@ -1,5 +1,5 @@
-󰛀 ${netspeed_rx!8:wlp2s0b1} |
- 󰛀 ${netspeed_tx!8:wlp2s0b1} |
- 󰏗 ${period_command:10m,xbps-install -Mun|wc -l} |
-  ${cpu_perc!3} |
- 󱑂 ${datetime:%d-%m-%y %H:%M:%S}
+up: ${netspeed_rx!8:wlp2s0} |
+ down: ${netspeed_tx!8:wlp2s0} |
+ pkg: ${period_command:10m,xbps-install -Mun|wc -l} |
+ cpu: ${cpu_perc!3} |
+ ${datetime:%d-%m-%y %H:%M:%S}

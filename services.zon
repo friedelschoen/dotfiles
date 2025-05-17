@@ -16,17 +16,6 @@ let service = fn (name) {
     "prefix": ".xservice",
     "paths": [
 		output {
-			with service("9wm"),
-			"enable": false,
-			"run": ''#!/bin/sh
-
-				SVDIR=.. sv check xserver > /dev/null || exit 1
-
-				cd $HOMEs
-				exec 9wm
-			''
-		},
-		output {
 			with service("battery-applet"),
 			"enable": true,
 			"run": ''#!/bin/sh
@@ -60,14 +49,6 @@ let service = fn (name) {
 			''
 		},
 		output {
-			with service("pa-applet"),
-			"enable": true,
-			"run": ''#!/bin/sh
-
-				exec pa-applet
-			''
-		},
-		output {
 			with service("st8"),
 			"enable": true,
 			"run": ''#!/bin/sh
@@ -80,7 +61,7 @@ let service = fn (name) {
 			"enable": true,
 			"run": ''#!/bin/sh
 
-				exec stw -p 1 -B 10 -y 20 psvstat ~/.xservice/*
+				exec stw -p 1 -B 10 -y 10 psvstat -s /var/service ~/.xservice/
 			''
 		},
 		output {
@@ -97,6 +78,38 @@ let service = fn (name) {
 			"run": ''#!/bin/sh
 
 				exec /usr/libexec/xfce-polkit
+			''
+		},
+		output {
+			with service("pipewire"),
+			"enable": true,
+			"run": ''#!/bin/sh
+
+			exec pipewire
+			''
+		},
+		output {
+			with service("pa-applet"),
+			"enable": true,
+			"run": ''#!/bin/sh
+
+			exec pa-applet
+			''
+		},
+		output {
+			with service("wireplumber"),
+			"enable": true,
+			"run": ''#!/bin/sh
+
+			exec wireplumber
+			''
+		},
+		output {
+			with service("transmission"),
+			"enable": true,
+			"run": ''#!/bin/sh
+
+			exec transmission-daemon -f
 			''
 		}
     ]

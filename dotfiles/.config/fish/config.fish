@@ -1,3 +1,5 @@
+# === FUNCTIONS ===
+
 function fish_prompt
     set -l time $CMD_DURATION
     set -l time_unit ms
@@ -38,9 +40,8 @@ end
 function fish_greeting
 end
 
-# Environment
+# === Environment ===
 
-set -x MANPATH "$MANPATH:$HOME/.local/share/man"
 set -x PLAN9 "$HOME/plan9"
 set -x EDITOR "micro"
 
@@ -48,6 +49,8 @@ set -xa PATH $HOME/.local/bin
 set -xa PATH $HOME/go/bin
 set -xa PATH $HOME/opt/segger-jlink
 set -xa PATH $PLAN9/bin
+
+set -xa MANPATH "$HOME/.local/share/man" "$PLAN9/man"
 
 alias ls="exa"
 alias xo="xdg-open"
@@ -59,6 +62,12 @@ alias vsv-user="vsv -d ~/.xservice"
 alias JLink="JLinkExe"
 alias acme="acme -f $PLAN9/font/monaco/monaco.12.font"
 alias deadcode='deadcode -f="{{println .Path}}{{range .Funcs}}{{printf \"\t%s\t%s\n\" .Name .Position}}{{end}}{{println}}"'
+
+# === TODO's ===
+
+mkdir -p /tmp/downloads # <- symlinked to $home/downloads
+
+# === Desktop Environment ===
 
 if [ -z "$DISPLAY" -a (tty) = /dev/tty1 ]
     exec startx
