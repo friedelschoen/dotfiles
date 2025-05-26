@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd ~/stacki3
+source venv/bin/activate
+
+exec stacki3 45

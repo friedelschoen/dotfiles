@@ -50,7 +50,7 @@ set -xa PATH $HOME/go/bin
 set -xa PATH $HOME/opt/segger-jlink
 set -xa PATH $PLAN9/bin
 
-set -xa MANPATH "$HOME/.local/share/man" "$PLAN9/man"
+set -xa MANPATH (manpath -q) "$HOME/.local/share/man" "$PLAN9/man"
 
 alias ls="exa"
 alias xo="xdg-open"
