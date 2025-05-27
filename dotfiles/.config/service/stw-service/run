@@ -1,4 +1,0 @@
-#!/bin/sh
-
-				exec stw -p 1 -B 10 -y 10 psvstat -s /var/service ~/.xservice/
-			

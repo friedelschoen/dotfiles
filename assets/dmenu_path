@@ -1,4 +1,0 @@
-#!/bin/sh
-
-export IFS=:
-exec stest -flx $PATH | sort -u

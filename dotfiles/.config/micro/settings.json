@@ -1,0 +1,24 @@
+{
+    "autosave": 1,
+    "basename": true,
+    "colorcolumn": 120,
+    "colorscheme": "material-tc",
+    "diffgutter": true,
+    "divchars": "=",
+    "divreverse": false,
+    "hlsearch": true,
+    "hltrailingws": true,
+    "lsp.formatOnSave": true,
+    "lsp.server": "c=clangd",
+    "matchbracestyle": "highlight",
+    "pluginchannels": [
+        "https://raw.githubusercontent.com/Neko-Box-Coder/unofficial-plugin-channel/stable/channel.json"
+    ],
+    "rmtrailingws": true,
+    "savecursor": true,
+    "scrollbar": true,
+    "scrollbarchar": " ",
+    "statusformatl": "$(filename) $(modified)($(line),$(col)) $(status.paste)",
+    "statusformatr": "$(opt:filetype) | $(opt:fileformat) | $(opt:encoding)",
+    "tabhighlight": true
+}
