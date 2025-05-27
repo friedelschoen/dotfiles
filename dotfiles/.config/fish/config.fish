@@ -70,5 +70,5 @@ mkdir -p /tmp/downloads # <- symlinked to $home/downloads
 # === Desktop Environment ===
 
 if [ -z "$DISPLAY" -a (tty) = /dev/tty1 ]
-    exec startx
+    exec dbus-run-session sway
 end
