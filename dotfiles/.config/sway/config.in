@@ -1,5 +1,6 @@
 # Read `man 5 sway` for a complete reference.
 
+exec xrdb -merge ~/.Xresources
 exec runsvdir ~/.config/service
 
 ### Variables
