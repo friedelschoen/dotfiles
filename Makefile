@@ -17,7 +17,7 @@ purge: clean
 
 # --- DIRECTORIES ---
 
-$(STOWDIR): dotfiles
+$(STOWDIR): dotfiles scripts/ppdir.py
 	python3 scripts/ppdir.py $@ $<
 
 $(FETCHDIR):

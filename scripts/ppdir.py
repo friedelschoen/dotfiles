@@ -41,7 +41,7 @@ def preprocessor(src, dest):
             incond = False
         elif cmd.startswith("@@"):
             pass
-        else:
+        elif not incond or cond:
             dest.write(preline(line, defs))
 
 def preline(line: str, defs: dict) -> str:
