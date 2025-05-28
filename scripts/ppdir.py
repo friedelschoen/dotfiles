@@ -92,4 +92,4 @@ if __name__ == "__main__":
                     os.unlink(destroot + fpath)
                 except FileNotFoundError:
                     pass
-                os.symlink('../' * (srcroot.count('/')+1) + srcroot[len(src):] + fpath, destroot + fpath)
+                os.symlink('../' * srcroot.count('/') + srcroot + fpath, destroot + fpath)
