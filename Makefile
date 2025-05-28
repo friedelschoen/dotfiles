@@ -18,7 +18,7 @@ purge: clean
 # --- DIRECTORIES ---
 
 $(STOWDIR): dotfiles
-	cp -r $< $@
+	python3 scripts/ppdir.py $@ $<
 
 $(FETCHDIR):
 	mkdir -p $@
