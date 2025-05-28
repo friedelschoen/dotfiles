@@ -1,55 +1,51 @@
 # Friedel's Dotfiles
 
-My personal dotfiles, managed declaratively with [Bake](https://github.com/friedelschoen/bake) and symlinked using [GNU Stow](https://www.gnu.org/software/stow/).
+Hello, you've somehow landed here. These are my dotfiles! They're managed using GNU Make and some scripts; automatically downloading some sources and a preprocessor.
 
-This setup allows for reproducible, modular configuration management across different systems and environments.
+## Requisite
 
-## Features
+### Building
 
-- 🧁 Built with [Bake] – a simple JSON-based build system
-- 🔗 Uses [GNU Stow] for symlink-based home directory management
-- 🧹 Clean, minimal configuration grouped by purpose
-- 🐧 Easily portable across machines and distributions
-- 🧪 Declarative structure for better reproducibility and maintainability
+- [GNU Make](https://www.gnu.org/software/make/) ([BSD make](https://man.freebsd.org/cgi/man.cgi?make(1)) is untested, probably works too)
+- [GNU AWK](https://www.gnu.org/software/gawk/) ([BSD awk](https://man.freebsd.org/cgi/man.cgi?awk(1)) is untested)
+- [curl](https://curl.se/)
+- [python3](https://www.python.org/)
 
-## Structure
+### Runtime
 
-Your dotfiles are organized into subdirectories, each representing a module or application (e.g., `vim/`, `zsh/`, `x/`, etc). Each subdirectory is designed to be managed independently using Stow.
+Software I configure with my dotfiles:
 
-```bash
-dotfiles/
-├── bake.json        # Bake config to install/sync dotfiles
-├── zsh/             # zsh config files
-├── vim/             # vim config files
-├── x/               # X11 config files
-├── ...
-```
+- shell: [fish](https://fishshell.com/)
+- compositor: [sway](https://swaywm.org/)
+- terminal: [foot](https://codeberg.org/dnkl/foot)
+- editor: [micro](https://micro-editor.github.io/)
+- statusbar: [st8](https://github.com/friedelschoen/st8/)
 
-## Usage
+## Preprocessor
 
-### 1. Clone this repo
+Files in dotfiles will be passed through a preprocessor if it has a `.in`-extension.
 
-```sh
-git clone https://github.com/friedelschoen/dotfiles.git
-```
+### Commands
 
-### 2. Build with Bake
+### `@@ ...`
 
-There is a [justfile](https://github.com/casey/just) provided with useful commands. For building just run
+This is a comment, this line is ignored
 
-```sh
-just build
-```
+### `@define <name> <text...>`
 
-### 3. Link with GNU Stow
+Defines variable _name_ as _text_. The content is preprocessed when defining.
 
-If everything went fine, you should have a `result` directory (symlink actually). To apply everything:
+### `@include <file>`
 
-```sh
-just stow
-```
+Includes the file, this file preprocessed.
 
-Or use `stow` manually.
+### `@ifeq <var> <text...>`, `@ifneq <var> <text...>`
+
+Tests if variable is equal to or not equal to text. Lines are printed until `@else` or `@endif`.
+
+## Contributing
+
+Feel free to post question or issues or make a pull-request!
 
 ## License
 
