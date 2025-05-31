@@ -1,5 +1,5 @@
-up: ${netspeed_rx!8:wlp170s0} |
- down: ${netspeed_tx!8:wlp170s0} |
+up: ${netspeed_rx!8:*} |
+ down: ${netspeed_tx!8:*} |
  pkg: ${period_command:10m,xbps-install -Mun|wc -l} |
  cpu: ${cpu_perc!3} |
  ${datetime:%d-%m-%y %H:%M:%S}
