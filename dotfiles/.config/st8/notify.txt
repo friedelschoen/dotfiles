@@ -1,1 +1,28 @@
-[${notify_appname}] ${notify_summary}: ${notify_body}
+[counter]
+
+[netspeed_rx]
+interface = *
+format = "up: {8}"
+
+[netspeed_tx]
+interface = *
+format = "down: {8}"
+
+[period_command]
+interval = 10m
+command = xbps-install -Mun | wc -l
+format = "pkg: {}"
+
+[temp]
+sensor = thermal_zone0
+format = temp: {}
+
+[cpu_perc]
+format = "cpu: {}%"
+
+[battery_perc]
+battery = BAT0
+format = "bat: {}"
+
+[datetime]
+datefmt = "%d-%m-%y %H:%M:%S"

@@ -40,10 +40,15 @@ end
 function fish_greeting
 end
 
+source "$HOME/.cargo/env.fish"
+
 # === Environment ===
 
-set -x PLAN9 "$HOME/plan9"
+set -x PLAN9 $HOME/git/9fans/plan9port
+set -x NAMESPACE "/tmp/ns.friedel.:0"
 set -x EDITOR "micro"
+
+mkdir -p $NAMESPACE
 
 set -xa PATH $HOME/.local/bin
 set -xa PATH $HOME/go/bin

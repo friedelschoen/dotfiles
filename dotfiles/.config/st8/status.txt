@@ -1,5 +1,26 @@
-up: ${netspeed_rx!8:*} |
- down: ${netspeed_tx!8:*} |
- pkg: ${period_command:10m,xbps-install -Mun|wc -l} |
- cpu: ${cpu_perc!3} |
- ${datetime:%d-%m-%y %H:%M:%S}
+[counter]
+
+[netspeed_rx]
+format = "up: {8}"
+
+[netspeed_tx]
+format = "down: {8}"
+
+[period_command]
+interval = 10m
+command = xbps-install -Mun | wc -l
+format = "pkg: {}"
+
+[temp]
+sensor = thermal_zone0
+format = temp: {}
+
+[cpu_perc]
+format = "cpu: {}%"
+
+[battery_perc]
+battery = BAT0
+format = "bat: {}"
+
+[datetime]
+datefmt = "%d-%m-%y %H:%M:%S"
