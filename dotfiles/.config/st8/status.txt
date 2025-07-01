@@ -2,25 +2,40 @@
 
 [netspeed_rx]
 format = "up: {8}"
+background-color = "#E07C75"
+text-color = "#000000"
+separate = no
 
 [netspeed_tx]
 format = "down: {8}"
+background-color = "#98C379"
+text-color = "#000000"
 
 [period_command]
 interval = 10m
 command = xbps-install -Mun | wc -l
 format = "pkg: {}"
+background-color = "#61AFEF"
+text-color = "#000000"
 
 [temp]
 sensor = thermal_zone0
 format = temp: {}
+background-color = "#E5C07B"
+text-color = "#000000"
 
 [cpu_perc]
-format = "cpu: {}%"
+format = "cpu: {3}%"
+background-color = "#ABB2BF"
+text-color = "#000000"
 
 [battery_perc]
-battery = BAT0
+battery = BAT1
 format = "bat: {}"
+background-color = "#56B6C2"
+text-color = "#000000"
 
 [datetime]
 datefmt = "%d-%m-%y %H:%M:%S"
+background-color = "#C678DD"
+text-color = "#000000"
