@@ -20,5 +20,10 @@
     "scrollbarchar": " ",
     "statusformatl": "$(filename) $(modified)($(line),$(col)) $(status.paste)",
     "statusformatr": "$(opt:filetype) | $(opt:fileformat) | $(opt:encoding)",
-    "tabhighlight": true
+    "tabhighlight": true,
+
+    "lsp.server": "python=pyls,go=gopls,c=clangd",
+   	"lsp.formatOnSave": true,
+   	"lsp.tabcompletion": true,
+   	"lsp.autocompleteDetails": false
 }
