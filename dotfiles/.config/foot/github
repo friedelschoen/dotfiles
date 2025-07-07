@@ -1,0 +1,29 @@
+# -*- conf -*-
+# GitHub Light Theme (VSCode)
+[cursor]
+color=ffffff 000000
+
+[colors]
+background=ffffff
+foreground=1f2328
+
+regular0=484f58  # black (dim gray)
+regular1=ff7b72  # red
+regular2=3fb950  # green
+regular3=4d2d00  # yellow
+regular4=0969da  # blue
+regular5=8250df  # magenta
+regular6=1b7c83  # cyan
+regular7=b1bac4  # white (dimmed black)
+
+bright0=6e7681  # bright black
+bright1=ffa198  # bright red
+bright2=56d364  # bright green
+bright3=633c01  # bright yellow
+bright4=218bff  # bright blue
+bright5=a475f9  # bright magenta
+bright6=3192aa  # bright cyan
+bright7=ffffff  # bright white
+
+selection-foreground=ffffff
+selection-background=0969da
