@@ -31,11 +31,6 @@ output * bg ~/.config/bgglenda.png center
 
 # output eDP-1 scale 1.3
 
-@define hostname @shell:hostname@
-@ifeq hostname friedels-framework
-output eDP-1 resolution 2256x1504 position 0 0 scale 1.5
-output DP-1 resolution 3840x2160 position 1504 0 scale 1.5
-@endif
 
 font Monaco 10
 
@@ -220,7 +215,7 @@ bar {
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command ~/projects/dwm-config/st8 -d swaybar --no-notify
+    status_command st8
 
     colors {
         statusline #abb2bf
