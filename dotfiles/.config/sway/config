@@ -206,6 +206,22 @@ bindsym $mod+r mode "resize"
     # Special key to take a screenshot with grim
     bindsym Print exec grim
 
+set $bg         #ffffea
+set $fg         #000000
+set $accent     #0000ff
+set $highlight  #4a90d9
+set $inactive   #ddddcc
+set $urgent     #ff0000
+
+# Window colors
+client.focused          $accent $bg $fg $accent
+client.unfocused        $inactive $bg $fg $inactive
+client.focused_inactive $inactive $bg $fg $inactive
+client.urgent           $urgent $bg $fg $urgent
+client.placeholder      $inactive $bg $fg $inactive
+client.background       $bg
+
+
 #
 # Status Bar:
 #

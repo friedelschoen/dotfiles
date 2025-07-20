@@ -1,0 +1,38 @@
+include = ~/.config/foot/github-dark
+
+font = Monaco:size=9
+pad = 5x5
+term = xterm-256color
+
+[cursor]
+style = beam
+blink = no
+color = 000000 000000
+
+[colors]
+# Override GitHub Dark with Plan 9 Acme-inspired colors
+foreground = 000000
+background = ffffea
+
+# Standard ANSI colors (mostly unused in Acme but set for completeness)
+regular0  = 000000  # black
+regular1  = ff0000  # red
+regular2  = 00aa00  # green
+regular3  = e0c000  # yellow (for selection highlights)
+regular4  = 0000ff  # blue (used in Acme for active text)
+regular5  = aa00aa  # magenta
+regular6  = 00aaaa  # cyan
+regular7  = ffffff  # white
+
+bright0   = 555555
+bright1   = ff5555
+bright2   = 55ff55
+bright3   = ffff55
+bright4   = 5555ff
+bright5   = ff55ff
+bright6   = 55ffff
+bright7   = ffffff
+
+selection-foreground = ffffff
+selection-background = 000088
+
