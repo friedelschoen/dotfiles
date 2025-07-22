@@ -7,7 +7,6 @@ term = xterm-256color
 [cursor]
 style = beam
 blink = no
-color = 000000 000000
 
 [colors]
 # Override GitHub Dark with Plan 9 Acme-inspired colors
@@ -36,3 +35,4 @@ bright7   = ffffff
 selection-foreground = ffffff
 selection-background = 000088
 
+cursor = 000000 000000

@@ -206,21 +206,8 @@ bindsym $mod+r mode "resize"
     # Special key to take a screenshot with grim
     bindsym Print exec grim
 
-set $bg         #ffffea
-set $fg         #000000
-set $accent     #0000ff
-set $highlight  #4a90d9
-set $inactive   #ddddcc
-set $urgent     #ff0000
-
-# Window colors
-client.focused          $accent $bg $fg $accent
-client.unfocused        $inactive $bg $fg $inactive
-client.focused_inactive $inactive $bg $fg $inactive
-client.urgent           $urgent $bg $fg $urgent
-client.placeholder      $inactive $bg $fg $inactive
-client.background       $bg
-
+# Cursorstijl (optioneel beam)
+seat seat0 xcursor_theme default 16
 
 #
 # Status Bar:
@@ -232,15 +219,6 @@ bar {
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
     status_command st8
-
-    colors {
-        statusline #abb2bf
-        background #171b23
-		focused_workspace #61afef #282c34 #61afef
-		urgent_workspace #be5046 #282c34 #d19a66
-
-        # inactive_workspace #32323200 #32323200 #5c5c5c
-    }
 }
 
 include /etc/sway/config.d/*

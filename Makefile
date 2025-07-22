@@ -1,25 +1,24 @@
 SOURCES = sources.txt
-STOWDIR = stowdir
+STOWDIR = dotfiles
 FETCHDIR = sources
+
+EXTRA = \
+	$(STOWDIR)/.config/bgglenda.png
 
 # --- PHONIES ---
 
 .PHONY: stow clean purge
 
-stow: $(STOWDIR) $(STOWDIR)/.config/bgglenda.png
+stow: $(STOWDIR) $(EXTRA)
 	stow -v $(STOWDIR)
 
 clean:
 	rm -rf $(FETCHDIR)
 
 purge: clean
-	rm -rf $(STOWDIR)
+	rm -rf $(EXTRA)
 
 # --- DIRECTORIES ---
-
-.PHONY: $(STOWDIR)
-$(STOWDIR): dotfiles scripts/ppdir.py
-	python3 scripts/ppdir.py $@ $<
 
 $(FETCHDIR):
 	mkdir -p $@
