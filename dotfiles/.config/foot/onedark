@@ -1,0 +1,33 @@
+[cursor]
+style = beam
+blink = no
+
+
+[colors]
+# Override GitHub Dark with Plan 9 Acme-inspired colors
+foreground = abb2bf
+background = 282c34
+
+# Standard ANSI colors (mostly unused in Acme but set for completeness)
+regular0  = 171b23  # black
+regular1  = be5046  # red
+regular2  = 98c379  # green
+regular3  = d19a66  # yellow (for selection highlights)
+regular4  = 61afef  # blue (used in Acme for active text)
+regular5  = c678dd  # magenta
+regular6  = 56b6c2  # cyan
+regular7  = 828997  # white
+
+bright0   = 5c6370
+bright1   = e06c75
+bright2   = 98c379
+bright3   = e5c07b
+bright4   = 61afef
+bright5   = c678dd
+bright6   = 56b6c2
+bright7   = abb2bf
+
+selection-foreground = ffffff
+selection-background = 000088
+
+cursor = 000000 000000
