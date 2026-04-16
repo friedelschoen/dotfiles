@@ -1,4 +1,3 @@
 #!/bin/sh
 
-				exec nm-applet
-			
+exec nm-applet

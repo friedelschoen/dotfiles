@@ -46,17 +46,23 @@ source "$HOME/.cargo/env.fish"
 
 set -x PLAN9 $HOME/git/9fans/plan9port
 set -x NAMESPACE "/tmp/ns.friedel.:0"
-set -x EDITOR "micro"
+set -x EDITOR "nvim"
+set -x ELECTRON_OZONE_PLATFORM_HINT "wayland"
+set -x DOTNET_ROOT $HOME/dotnet
+set -x QT_QPA_PLATFORM wayland
+set -x PSVDIRS "/var/service:$HOME/.config/service"
+set -x PAGER "nvimpager"
 
 mkdir -p $NAMESPACE
 
 set -xa PATH $HOME/.local/bin
+set -xa PATH $HOME/dotnet
 set -xa PATH $HOME/go/bin
 set -xa PATH $HOME/opt/segger-jlink
 set -xa PATH $PLAN9/bin
 set -xa MANPATH (manpath -q) "$HOME/.local/share/man" "$PLAN9/man"
 
-set -x DBUS_SESSION_BUS_ADDRESS "unix:path=$XDG_RUNTIME_DIR/dbus"
+#set -x DBUS_SESSION_BUS_ADDRESS "unix:path=$XDG_RUNTIME_DIR/dbus"
 
 alias ls="exa"
 alias xo="xdg-open"
@@ -76,5 +82,5 @@ mkdir -p /tmp/downloads # <- symlinked to $home/downloads
 # === Desktop Environment ===
 
 if [ -z "$DISPLAY" -a (tty) = /dev/tty1 ]
-    exec sway
+    dbus-run-session sway
 end

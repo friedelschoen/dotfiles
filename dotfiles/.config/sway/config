@@ -13,15 +13,17 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term foot
+set $term kitty
 # Your preferred application launcher
-set $menu rofi -show run
+set $menu rofi -show combi -combi-modes drun,run
 set $web firefox-wayland
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/.config/bgglenda.png center
+output * bg ~/static-cling.jpg center 
+# output * bg ~/.config/bgglenda.png center
+
 #
 # Example configuration:
 #
@@ -31,15 +33,13 @@ output * bg ~/.config/bgglenda.png center
 
 # output eDP-1 scale 1.3
 
-font Monaco 10
+#font 'Menlo' 10
+font 'Fira Sans' 11
 
 ### Idle configuration
 
-set $lock swaylock -l -c 000000 --font 'Go'
-exec swayidle -w \
-         timeout 300 '$lock' \
-         timeout 420 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-         before-sleep '$lock'
+#set $lock swaylock -l -c 000000 --font 'Go'
+#exec swayidle -w timeout 900 '$lock' timeout 420 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' before-sleep '$lock'
 
 input * {
     xkb_layout "us"
@@ -57,6 +57,9 @@ bindsym $mod+q kill
 
 # Start your launcher
 bindsym $mod+Space exec $menu
+bindsym $mod+Shift+e exec rofi -show emoji -emoji-mode copy
+
+bindsym $mod+m exec runeman
 
 # Drag floating windows by holding down $mod and left mouse button.
 # Resize them with right mouse button + $mod.
@@ -70,6 +73,10 @@ bindsym $mod+Shift+c reload
 
 # Exit sway (logs you out of your Wayland session)
 bindsym $mod+Shift+q exec swaynag -t warning -m 'Do you really want to exit sway?' -B 'Yes, exit sway' 'swaymsg exit'
+
+# Lock Screen
+bindsym $mod+x exec swaylock
+
 #
 # Moving around:
 #
@@ -90,19 +97,8 @@ bindsym $mod+Shift+Right move right
 # Workspaces:
 #
 
-# Switch to workspace
-bindsym $mod+1 workspace number 1
-bindsym $mod+2 workspace number 2
-bindsym $mod+3 workspace number 3
-bindsym $mod+4 workspace number 4
-bindsym $mod+5 workspace number 5
-
-# Move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace number 1
-bindsym $mod+Shift+2 move container to workspace number 2
-bindsym $mod+Shift+3 move container to workspace number 3
-bindsym $mod+Shift+4 move container to workspace number 4
-bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+greater move workspace to output right
+bindsym $mod+less move workspace to output left
 
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
@@ -176,32 +172,63 @@ bindsym $mod+Right resize grow width 10px
     bindsym Print exec grim
 
 # Cursorstijl (optioneel beam)
-seat seat0 xcursor_theme default 16
+seat seat0 xcursor_theme default 20
+
+# show title in the center
+title_align center
+# windows have a 2px border with titlebar
+default_border normal 2
+# always show borders
+smart_borders off
+
+for_window [all] title_format "[%app_id%class] %title {%shell}"
+
+for_window [class="MPLAB.*"] floating enable
+
+client.unfocused "#171b23" "#171b23" "#abb2bf" "#171b23" "#171b23"
+client.focused "#61afef" "#61afef" "#282c34" "#61afef" "#61afef"
+client.urgent "#be5046" "#282c34" "#d19a66" "#be5046" "#be5046"
+
+# workspaces
+exec_always ~/.config/sway/workspaces.py
+include ~/.config/sway/workspaces.conf
+
+# refresh display settings
+exec_always sv restart ~/.config/service/kanshi
+
+#    [SchemeNorm] = {"#abb2bf", "#171b23", "#171b23"},
+#    [SchemeSel] = {"#61afef", "#282c34", "#61afef"},
+#    [SchemeUrg] = {"#d19a66", "#282c34", "#be5046"},
+#    [3] = {"#282c34", "#d19a66", "#171b23"},
+#    [4] = {"#282c34", "#98c379", "#171b23"},
 
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
-bar {
-    position bottom
-    height 25px
+#bar {
+#    position bottom
+#    height 25px
+#    workspace_buttons yes
+#	font 'Fira Mono' 10
 
-    status_command st8
+ #   status_command sh -c '~/git/friedelschoen/st8/st8 2> ~/sway.log'
 
-	tray_output none
+	#tray_output *
 
-    colors {
-		background #171b23
+#    colors {
+#    	background "#171b23"
+#		inactive_workspace "#171b23" "#171b23" "#abb2bf"
+#		focused_workspace "#61afef" "#61afef" "#282c34"
+#		urgent_workspace "#be5046" "#282c34" "#d19a66"
 
-		focused_workspace #61afef #282c34 #61afef
-		active_workspace #171b23 #171b23 #61afef
-		inactive_workspace #171b23 #171b23 #abb2bf
-		workspace_min_width 25px
-    }
-}
+#		workspace_min_width 25px
+ #   }
+#}
 
 
 #    /*               fg         bg         border   */
 #    [SchemeNorm] = {"#abb2bf", "#171b23", "#171b23"},
 #    [SchemeSel] = {"#61afef", "#282c34", "#61afef"},
 #    [SchemeUrg] = {"#d19a66", "#282c34", "#be5046"},
+

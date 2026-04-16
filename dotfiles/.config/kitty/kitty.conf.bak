@@ -1,0 +1,14 @@
+font_family     family="Menlo" weight=500 features="-liga"
+bold_font       auto weight=1000
+font_size       9
+#modify_font     cell_width 80%
+
+window_margin_width 2
+
+#include onedark.conf
+
+
+# BEGIN_KITTY_THEME
+# One Dark
+include current-theme.conf
+# END_KITTY_THEME
