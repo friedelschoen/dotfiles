@@ -27,6 +27,7 @@ vim.pack.add {
 	gh "timantipov/md-table-tidy.nvim", -- format markdown tables
 	gh "hedyhli/outline.nvim", -- show buffer outlines (functions, headers)
 	gh "lukas-reineke/indent-blankline.nvim", -- indentation visualizer
+	gh "sakhnik/nvim-gdb", -- gdb debugger
 
 	-- dependencies --
 	gh "nvim-lua/plenary.nvim", -- utilties; ->neo-tree, tiny-code-action, todo-comments
@@ -35,11 +36,26 @@ vim.pack.add {
 	gh "nvim-telescope/telescope.nvim", -- popups ->tiny-code-action
 }
 
+-- theme
+vim.opt.background = "dark"
+vim.cmd [[colorscheme github_dark]]
+
 require("conform").setup {
 	formatters_by_ft = {
 		lua = { "stylua" },
 		go = { "goimports", "gofmt" },
 		c = { "clang-format" },
+		javascript = { "prettier" },
+		typescript = { "prettier" },
+		html = { "prettier" },
+		css = { "prettier" },
+		svelte = { "prettier" },
+	},
+
+	formatters = {
+		prettier = {
+			prepend_args = { "--plugin=prettier-plugin-svelte" },
+		},
 	},
 }
 
@@ -75,19 +91,42 @@ require("outline").setup {}
 
 require("ibl").setup {}
 
+require("nvim-treesitter").setup {}
 require("nvim-treesitter").install {
 	"go",
 	"comment",
 	"markdown-inline",
 	"markdown",
+	"sql",
+	"lua",
+	"javascript",
+	"css",
+	"html",
+	"svelte",
+	"json",
+	"typescript",
 }
 
-vim.api.nvim_create_autocmd("BufWritePre", {
+vim.api.nvim_create_autocmd("FileType", {
 	pattern = "*",
-	callback = function(args)
-		require("conform").format {
-			bufnr = args.buf,
-			lsp_format = "fallback",
-		}
+	callback = function()
+		pcall(vim.treesitter.start)
 	end,
 })
+
+vim.api.nvim_create_autocmd("bufwritepre", {
+	pattern = "*",
+	callback = function(args)
+		if not vim.g.noautoformat then
+			require("conform").format {
+				bufnr = args.buf,
+				lsp_format = "fallback",
+			}
+		end
+	end,
+})
+
+vim.api.nvim_create_user_command("FormatToggle", function()
+	vim.g.noautoformat = not vim.g.noautoformat
+	print("Autoformat: " .. tostring(not vim.g.noautoformat))
+end, {})

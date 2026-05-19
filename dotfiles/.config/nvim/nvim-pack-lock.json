@@ -49,6 +49,10 @@
       "rev": "de740991c12411b663994b2860f1a4fd0937c130",
       "src": "https://github.com/MunifTanjim/nui.nvim"
     },
+    "nvim-gdb": {
+      "rev": "3ea9e52a7be60373a127be9dcc94773bc1d6e25c",
+      "src": "https://github.com/sakhnik/nvim-gdb"
+    },
     "nvim-lspconfig": {
       "rev": "a776085e04f7b15d0b59fae2244df07d98360ab4",
       "src": "https://github.com/neovim/nvim-lspconfig"

@@ -56,7 +56,3 @@ vim.o.statusline = table.concat {
 -- lsp
 o.completeopt = "menuone,popup,noinsert"
 o.updatetime = 500
-
--- theme
-o.background = "dark"
-vim.cmd [[colorscheme onedark]]

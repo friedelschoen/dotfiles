@@ -10,7 +10,7 @@ EXTRA = \
 .PHONY: stow clean purge
 
 stow: $(STOWDIR) $(EXTRA)
-	stow -v $(STOWDIR)
+	stow -v -t $(HOME) $(STOWDIR)
 
 clean:
 	rm -rf $(FETCHDIR)

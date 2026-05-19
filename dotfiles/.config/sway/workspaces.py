@@ -4,7 +4,7 @@ import sys
 import os.path
 
 WORKSPACES = {
-    "work": ['app_id="code-oss"', 'app_id="nvim-qt"', 'app_id="kicad"'],
+    "work": ['app_id="code-oss"', 'app_id="nvim-qt"'],
     "browser": ['app_id="Firefox"'],
     "term": [],
     "misc": ['app_id="thunar"'],

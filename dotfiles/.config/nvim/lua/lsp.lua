@@ -1,27 +1,21 @@
 vim.lsp.enable "gopls"
 vim.lsp.enable "pyright"
 vim.lsp.enable "clangd"
-
-vim.lsp.config("ltex_plus", {
-	cmd = { "ltex-ls-plus" },
-	filetypes = { "markdown", "tex", "plaintex" },
-	-- root_markers = { ".git" },
-	settings = {
-		ltex = {
-			language = "nl",
-		},
-	},
-})
-
 vim.lsp.enable "ltex_plus"
+vim.lsp.enable "bashls"
+vim.lsp.enable "vala_ls"
+vim.lsp.enable "svelte"
+vim.lsp.enable "serve_d"
+vim.lsp.enable "postgres_lsp"
+vim.lsp.enable "ts_ls"
 
+vim.lsp.document_color.enable(true)
 vim.lsp.inlay_hint.enable(true)
--- vim.lsp.codelens.enable(true)
 
 vim.diagnostic.config {
 	virtual_text = {
 		spacing = 2,
-		prefix = "▎", --,", -- of "", "▎", ""
+		prefix = "▎",
 	},
 	signs = true,
 	underline = true,
@@ -40,7 +34,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		if client:supports_method "textDocument/implementation" then
 			-- Create a keymap for vim.lsp.buf.implementation ...
 		end
-		-- Enable auto-completion. Note: Use CTRL-Y to select an item. |complete_CTRL-Y|
+		-- Enable autocompletion. Note: Use CTRL-Y to select an item. |complete_CTRL-Y|
 		if client:supports_method "textDocument/completion" then
 			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
 
